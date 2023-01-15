@@ -18,6 +18,22 @@ export function Header() {
               Products
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
+              to="/signin"
+            >
+              SignIn
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
+              to="/signup"
+            >
+              SignUp
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>
