@@ -1,12 +1,23 @@
-import {
-  Formik, Form, Field, ErrorMessage,
-} from 'formik';
+import { Formik, Form, useField } from 'formik';
 import { authenticationFormValidationSchema } from './validator';
 
 const initialValues = {
   email: '',
   password: '',
 };
+
+function MyTextInput({ label, ...props }) {
+  const [field, meta] = useField(props);
+  return (
+    <>
+      <label htmlFor={props.name}>{label}</label>
+      <input className="form-control" {...field} {...props} />
+      {meta.touched && meta.error ? (
+        <div className="error">{meta.error}</div>
+      ) : null}
+    </>
+  );
+}
 
 export function AuthenticationPage() {
   const submitHandler = (values) => {
@@ -19,14 +30,20 @@ export function AuthenticationPage() {
       validationSchema={authenticationFormValidationSchema}
       onSubmit={submitHandler}
     >
-      <Form className="d-flex flex-column">
-        <Field name="email" placeholder="email here" type="email" />
-        <ErrorMessage component="p" className="error" name="email" />
-
-        <Field name="password" placeholder="password here" type="text" />
-        <ErrorMessage component="p" className="error" name="password" />
-
-        <button type="submit">Submit</button>
+      <Form className="d-grid gap-2 col-6 mx-auto">
+        <MyTextInput
+          label="Email Address"
+          name="email"
+          type="email"
+          placeholder="email here"
+        />
+        <MyTextInput
+          label="Password"
+          name="password"
+          type="text"
+          placeholder="password here"
+        />
+        <button type="submit" className="btn btn-primary">Submit</button>
       </Form>
     </Formik>
   );

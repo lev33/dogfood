@@ -1,6 +1,4 @@
-import {
-  Formik, Form, Field, ErrorMessage,
-} from 'formik';
+import { Formik, Form, useField } from 'formik';
 import { registrationFormValidationSchema } from './validator';
 
 const initialValues = {
@@ -8,6 +6,19 @@ const initialValues = {
   group: 'sm9',
   password: '',
 };
+
+function MyTextInput({ label, ...props }) {
+  const [field, meta] = useField(props);
+  return (
+    <>
+      <label htmlFor={props.name}>{label}</label>
+      <input className="form-control" {...field} {...props} />
+      {meta.touched && meta.error ? (
+        <div className="error">{meta.error}</div>
+      ) : null}
+    </>
+  );
+}
 
 export function RegistrationPage() {
   const submitHandler = (values) => {
@@ -20,17 +31,25 @@ export function RegistrationPage() {
       validationSchema={registrationFormValidationSchema}
       onSubmit={submitHandler}
     >
-      <Form className="d-flex flex-column">
-        <Field name="email" placeholder="email here" type="email" />
-        <ErrorMessage component="p" className="error" name="email" />
-
-        <Field name="group" type="text" />
-        <ErrorMessage component="p" className="error" name="group" />
-
-        <Field name="password" placeholder="password here" type="text" />
-        <ErrorMessage component="p" className="error" name="password" />
-
-        <button type="submit">Submit</button>
+      <Form className="d-grid gap-2 col-6 mx-auto">
+        <MyTextInput
+          label="Email Address"
+          name="email"
+          type="email"
+          placeholder="email here"
+        />
+        <MyTextInput
+          label="Group"
+          name="group"
+          type="text"
+        />
+        <MyTextInput
+          label="Password"
+          name="password"
+          type="text"
+          placeholder="password here"
+        />
+        <button type="submit" className="btn btn-primary">Submit</button>
       </Form>
     </Formik>
   );
