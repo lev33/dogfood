@@ -1,0 +1,21 @@
+.wr {
+	background: yellow;
+}
+
+.headerMenu {
+	display: flex;
+	list-style: none;
+	gap: 8px;
+}
+
+.headerMenu li:nth-child(2) {
+	margin-left: auto;
+}
+
+.headerMenu a {
+	text-decoration: none;
+}
+
+.activeLink {
+	color: orange;
+}
