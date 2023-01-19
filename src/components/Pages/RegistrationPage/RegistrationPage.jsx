@@ -1,4 +1,6 @@
+import { useMutation } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import { registrationFormValidationSchema } from './validator';
 
 const initialValues = {
@@ -21,8 +23,22 @@ function MyTextInput({ label, ...props }) {
 }
 
 export function RegistrationPage() {
-  const submitHandler = (values) => {
-    console.log({ values });
+  const navigate = useNavigate();
+
+  const { mutateAsync, isLoading } = useMutation({
+    mutationFn: (data) => fetch('https://api.react-learning.ru/signup', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json()),
+  });
+
+  const submitHandler = async (values) => {
+    const res = await mutateAsync(values);
+    navigate('/signin');
+    console.log({ values, res });
   };
 
   return (
@@ -49,7 +65,7 @@ export function RegistrationPage() {
           type="text"
           placeholder="password here"
         />
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button disabled={isLoading} type="submit" className="btn btn-primary">Submit</button>
       </Form>
     </Formik>
   );
