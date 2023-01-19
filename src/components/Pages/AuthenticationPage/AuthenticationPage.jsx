@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import { useTokenMethodsContext } from '../../../contexts/TokenContextProvider';
 import { authenticationFormValidationSchema } from './validator';
 
 const initialValues = {
@@ -22,6 +23,7 @@ function MyTextInput({ label, ...props }) {
 }
 
 export function AuthenticationPage() {
+  const { addToken } = useTokenMethodsContext();
   const navigate = useNavigate();
 
   const { mutateAsync, isLoading } = useMutation({
@@ -36,6 +38,7 @@ export function AuthenticationPage() {
 
   const submitHandler = async (values) => {
     const res = await mutateAsync(values);
+    addToken(res.token);
     navigate('/products');
     console.log({ values, res });
   };

@@ -8,6 +8,7 @@ import { Main } from './components/Main/Main';
 import { ProductsPage } from './components/Pages/ProductsPage/ProductsPage';
 import { AuthenticationPage } from './components/Pages/AuthenticationPage/AuthenticationPage';
 import { RegistrationPage } from './components/Pages/RegistrationPage/RegistrationPage';
+import { TokenContextWrapper } from './contexts/TokenContextProvider';
 
 const myRouter = createBrowserRouter([
   {
@@ -37,7 +38,7 @@ const myRouter = createBrowserRouter([
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // default: true
+      refetchOnWindowFocus: false,
     },
   },
 });
@@ -46,7 +47,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={myRouter} />
+      <TokenContextWrapper>
+        <RouterProvider router={myRouter} />
+      </TokenContextWrapper>
     </QueryClientProvider>
   </React.StrictMode>,
 );
