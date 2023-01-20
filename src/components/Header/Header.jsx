@@ -1,8 +1,12 @@
 import classNames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
+import { useTokenMethodsContext } from '../../contexts/TokenContextProvider';
 import headerStyles from './header.module.css';
 
 export function Header() {
+  const { clearLS } = useTokenMethodsContext();
+  // const clickHandler = () => { clearLS(); };
+
   return (
     <header className={headerStyles.wr}>
       <nav>
@@ -33,6 +37,15 @@ export function Header() {
             >
               SignUp
             </NavLink>
+          </li>
+          <li>
+            <button
+              onClick={clearLS}
+              type="submit"
+              className="btn btn-warning"
+            >
+              LogOut
+            </button>
           </li>
         </ul>
       </nav>

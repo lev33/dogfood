@@ -1,62 +1,22 @@
 /* eslint-disable no-underscore-dangle */
-import { useQuery } from '@tanstack/react-query';
-import { withQuery } from '../../HOCs/withQuery';
-import { ProductItem } from '../../ProductItem/ProductItem';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTokenContext } from '../../../contexts/TokenContextProvider';
-
-function ProductsInner({ data }) {
-  const { products } = data;
-  if (!products.length) return <p>is empty...</p>;
-
-  return (
-    <ul className="list-group">
-      {products.map((product) => (
-        <ProductItem
-          key={product._id}
-          name={product.name}
-          pictures={product.pictures}
-          description={product.description}
-        />
-      ))}
-    </ul>
-  );
-}
-
-const ProductsInnerWithQuery = withQuery(ProductsInner);
+import { Products } from '../../Products/Products';
 
 export function ProductsPage() {
+  const navigate = useNavigate();
   const token = useTokenContext();
 
-  const {
-    data, isLoading, isError, error, refetch,
-  } = useQuery({
-    queryKey: ['ProductsFetch'],
-    queryFn: () => fetch('https://api.react-learning.ru/products', {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-type': 'application/json',
-      },
-    }).then((res) => {
-      if (res.status >= 400 && res.status < 500) {
-        throw new Error(`Произошла ошибка при получении списка товаров. 
-        Проверьте отправляемые данные. Status: ${res.status}`);
-      }
-
-      if (res.status >= 500) {
-        throw new Error(`Произошла ошибка при получении списка товаров. 
-        Попробуйте сделать запрос позже. Status: ${res.status}`);
-      }
-      return res.json();
-    }),
-  });
-
-  return (
-    <ProductsInnerWithQuery
-      data={data}
-      isLoading={isLoading}
-      isError={isError}
-      error={error}
-      refetch={refetch}
-    />
+  useEffect(() => {
+    console.log('ProductsPage', { token });
+    if (!token) navigate('/signin');
+  }, [token]);
+  return (token
+  && (
+  <Products
+    token={token}
+  />
+  )
   );
 }

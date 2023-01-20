@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTokenMethodsContext } from '../../../contexts/TokenContextProvider';
+import { useTokenContext, useTokenMethodsContext } from '../../../contexts/TokenContextProvider';
 import { authenticationFormValidationSchema } from './validator';
 
 const initialValues = {
@@ -23,8 +24,14 @@ function MyTextInput({ label, ...props }) {
 }
 
 export function AuthenticationPage() {
+  const token = useTokenContext();
   const { addToken } = useTokenMethodsContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('AuthenticationPage', { token });
+    if (token) navigate('/products');
+  }, [token]);
 
   const { mutateAsync, isLoading } = useMutation({
     mutationFn: (data) => fetch('https://api.react-learning.ru/signin', {
@@ -39,7 +46,6 @@ export function AuthenticationPage() {
   const submitHandler = async (values) => {
     const res = await mutateAsync(values);
     addToken(res.token);
-    navigate('/products');
     console.log({ values, res });
   };
 
