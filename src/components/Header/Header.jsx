@@ -1,11 +1,10 @@
 import classNames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
-import { useTokenMethodsContext } from '../../contexts/TokenContextProvider';
+import { useTokenContext } from '../../contexts/TokenContextProvider';
 import headerStyles from './header.module.css';
 
 export function Header() {
-  const { clearLS } = useTokenMethodsContext();
-  // const clickHandler = () => { clearLS(); };
+  const token = useTokenContext();
 
   return (
     <header className={headerStyles.wr}>
@@ -27,7 +26,7 @@ export function Header() {
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/signin"
             >
-              SignIn
+              { token ? ' Выход' : 'Вход' }
             </NavLink>
           </li>
           <li>
@@ -35,17 +34,8 @@ export function Header() {
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/signup"
             >
-              SignUp
+              Регистрация
             </NavLink>
-          </li>
-          <li>
-            <button
-              onClick={clearLS}
-              type="submit"
-              className="btn btn-warning"
-            >
-              LogOut
-            </button>
           </li>
         </ul>
       </nav>
