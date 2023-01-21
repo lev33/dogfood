@@ -14,9 +14,7 @@ export function ProductsPage() {
   }, [token]);
   return (token
   && (
-  <Products
-    token={token}
-  />
+  <Products />
   )
   );
 }

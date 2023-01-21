@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { useQuery } from '@tanstack/react-query';
+import { dogFoodApi } from '../../api/DogFoodApi';
 import { withQuery } from '../HOCs/withQuery';
 import { ProductItem } from '../ProductItem/ProductItem';
 
@@ -8,7 +9,7 @@ function ProductsInner({ data }) {
   if (!products.length) return <p>is empty...</p>;
 
   return (
-    <ul className="list-group">
+    <ul className="d-flex p-2 flex-wrap align-items-center justify-content-around">
       {products.map((product) => (
         <ProductItem
           key={product._id}
@@ -23,29 +24,12 @@ function ProductsInner({ data }) {
 
 const ProductsInnerWithQuery = withQuery(ProductsInner);
 
-export function Products({ token }) {
-  console.log('Products', { token });
+export function Products() {
   const {
     data, isLoading, isError, error, refetch,
   } = useQuery({
     queryKey: ['ProductsFetch'],
-    queryFn: () => fetch('https://api.react-learning.ru/products', {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-type': 'application/json',
-      },
-    }).then((res) => {
-      if (res.status >= 400 && res.status < 500) {
-        throw new Error(`Произошла ошибка при получении списка товаров. 
-        Проверьте отправляемые данные. Status: ${res.status}`);
-      }
-
-      if (res.status >= 500) {
-        throw new Error(`Произошла ошибка при получении списка товаров. 
-        Попробуйте сделать запрос позже. Status: ${res.status}`);
-      }
-      return res.json();
-    }),
+    queryFn: () => dogFoodApi.getAllProducts(),
   });
 
   return (

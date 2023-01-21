@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { dogFoodApi } from '../../api/DogFoodApi';
 import { useTokenContext, useTokenMethodsContext } from '../../contexts/TokenContextProvider';
 import { authenticationFormValidationSchema } from './validator';
 
@@ -34,18 +35,13 @@ export function Authentication() {
   }, [token]);
 
   const { mutateAsync, isLoading } = useMutation({
-    mutationFn: (data) => fetch('https://api.react-learning.ru/signin', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    }).then((res) => res.json()),
+    mutationFn: (data) => dogFoodApi.signIn(data),
   });
 
   const submitHandler = async (values) => {
     const res = await mutateAsync(values);
     addToken(res.token);
+    dogFoodApi.setToken(res.token);
     console.log({ values, res });
   };
 
