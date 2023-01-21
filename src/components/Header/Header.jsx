@@ -5,6 +5,7 @@ import headerStyles from './header.module.css';
 
 export function Header() {
   const token = useTokenContext();
+  console.log('Header', { token });
 
   return (
     <header className={headerStyles.wr}>
@@ -26,16 +27,18 @@ export function Header() {
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/signin"
             >
-              { token ? ' Выход' : 'Вход' }
+              { token ? 'Выход' : 'Вход' }
             </NavLink>
           </li>
           <li>
+            { !token && (
             <NavLink
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/signup"
             >
               Регистрация
             </NavLink>
+            )}
           </li>
         </ul>
       </nav>
