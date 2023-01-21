@@ -1,11 +1,19 @@
 import classNames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
-import { useTokenContext } from '../../contexts/TokenContextProvider';
+import { dogFoodApi } from '../../api/DogFoodApi';
+import { useTokenContext, useTokenMethodsContext } from '../../contexts/TokenContextProvider';
 import headerStyles from './header.module.css';
 
 export function Header() {
   const token = useTokenContext();
+  const { clearLS } = useTokenMethodsContext();
+
   console.log('Header', { token });
+
+  const clickLogOutHandler = () => {
+    clearLS();
+    dogFoodApi.setToken('');
+  };
 
   return (
     <header className={headerStyles.wr}>
@@ -23,12 +31,14 @@ export function Header() {
             </NavLink>
           </li>
           <li>
+            { !token && (
             <NavLink
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/signin"
             >
-              { token ? 'Выход' : 'Вход' }
+              Вход
             </NavLink>
+            )}
           </li>
           <li>
             { !token && (
@@ -38,6 +48,17 @@ export function Header() {
             >
               Регистрация
             </NavLink>
+            )}
+          </li>
+          <li>
+            { token && (
+            <button
+              onClick={clickLogOutHandler}
+              type="submit"
+              className="btn btn-warning"
+            >
+              Выход
+            </button>
             )}
           </li>
         </ul>
