@@ -41,7 +41,6 @@ export function AuthenticationPage() {
   const submitHandler = async (values) => {
     const res = await mutateAsync(values);
     addToken(res.token);
-    dogFoodApi.setToken(res.token);
     console.log({ values, res });
   };
 
