@@ -1,4 +1,9 @@
+import { useMutation } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { dogFoodApi } from '../../../api/DogFoodApi';
+import { useTokenContext, useTokenMethodsContext } from '../../../contexts/TokenContextProvider';
 import { authenticationFormValidationSchema } from './validator';
 
 const initialValues = {
@@ -20,8 +25,23 @@ function MyTextInput({ label, ...props }) {
 }
 
 export function AuthenticationPage() {
-  const submitHandler = (values) => {
-    console.log({ values });
+  const token = useTokenContext();
+  const { addToken } = useTokenMethodsContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('Authentication', { token });
+    if (token) navigate('/products');
+  }, [token]);
+
+  const { mutateAsync, isLoading } = useMutation({
+    mutationFn: (data) => dogFoodApi.signIn(data),
+  });
+
+  const submitHandler = async (values) => {
+    const res = await mutateAsync(values);
+    addToken(res.token);
+    console.log({ values, res });
   };
 
   return (
@@ -43,7 +63,7 @@ export function AuthenticationPage() {
           type="text"
           placeholder="password here"
         />
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button disabled={isLoading} type="submit" className="btn btn-primary">Submit</button>
       </Form>
     </Formik>
   );

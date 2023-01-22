@@ -1,4 +1,7 @@
+import { useMutation } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { dogFoodApi } from '../../../api/DogFoodApi';
 import { registrationFormValidationSchema } from './validator';
 
 const initialValues = {
@@ -21,8 +24,16 @@ function MyTextInput({ label, ...props }) {
 }
 
 export function RegistrationPage() {
-  const submitHandler = (values) => {
-    console.log({ values });
+  const navigate = useNavigate();
+
+  const { mutateAsync, isLoading } = useMutation({
+    mutationFn: (data) => dogFoodApi.signUp(data),
+  });
+
+  const submitHandler = async (values) => {
+    const res = await mutateAsync(values);
+    navigate('/signin');
+    console.log({ values, res });
   };
 
   return (
@@ -49,7 +60,7 @@ export function RegistrationPage() {
           type="text"
           placeholder="password here"
         />
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button disabled={isLoading} type="submit" className="btn btn-primary">Submit</button>
       </Form>
     </Formik>
   );
