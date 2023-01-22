@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
-import { dogFoodApi } from '../../api/DogFoodApi';
 import { useTokenContext, useTokenMethodsContext } from '../../contexts/TokenContextProvider';
 import headerStyles from './header.module.css';
 
@@ -9,11 +8,6 @@ export function Header() {
   const { clearLS } = useTokenMethodsContext();
 
   console.log('Header', { token });
-
-  const clickLogOutHandler = () => {
-    clearLS();
-    dogFoodApi.setToken('');
-  };
 
   return (
     <header className={headerStyles.wr}>
@@ -53,7 +47,7 @@ export function Header() {
           <li>
             { token && (
             <button
-              onClick={clickLogOutHandler}
+              onClick={clearLS}
               type="submit"
               className="btn btn-warning"
             >
