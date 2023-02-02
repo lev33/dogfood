@@ -1,13 +1,20 @@
 import classNames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import { useTokenContext, useTokenMethodsContext } from '../../contexts/TokenContextProvider';
+import { dogFoodApi } from '../../api/DogFoodApi';
+import { clearLS } from '../../redux/slices/userSlice';
 import headerStyles from './header.module.css';
 
 export function Header() {
-  const token = useTokenContext();
-  const { clearLS } = useTokenMethodsContext();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
 
   console.log('Header', { token });
+
+  const clickLogOutHandler = () => {
+    dispatch(clearLS());
+    dogFoodApi.setToken('');
+  };
 
   return (
     <header className={headerStyles.wr}>
@@ -47,7 +54,7 @@ export function Header() {
           <li>
             { token && (
             <button
-              onClick={clearLS}
+              onClick={clickLogOutHandler}
               type="submit"
               className="btn btn-warning"
             >

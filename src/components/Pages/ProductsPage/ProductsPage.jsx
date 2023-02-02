@@ -1,12 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useTokenContext } from '../../../contexts/TokenContextProvider';
+import { dogFoodApi } from '../../../api/DogFoodApi';
 import { Products } from '../../Products/Products';
 
 export function ProductsPage() {
   const navigate = useNavigate();
-  const token = useTokenContext();
+  const { token } = useSelector((state) => state.user);
+  dogFoodApi.setToken(token);
 
   useEffect(() => {
     console.log('ProductsPage', { token });
