@@ -71,6 +71,28 @@ class DogFoodApi {
 
     return res.json();
   }
+
+  async getQueryProducts(query) {
+    this.checkToken();
+
+    const res = await fetch(`${this.baseUrl}/products/search?query=${query}`, {
+      headers: {
+        authorization: this.getAuthorizationHeader(),
+        'Content-type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при получении списка товаров. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при получении списка товаров. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
 }
 
 export const dogFoodApi = new DogFoodApi({ baseUrl: 'https://api.react-learning.ru' });

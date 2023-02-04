@@ -7,6 +7,9 @@ export const initState = {
     email: '',
     token: '',
   },
+  filter: {
+    search: '',
+  },
 };
 
 export const getInitState = () => {
