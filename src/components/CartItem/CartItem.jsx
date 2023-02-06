@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  addItemToCart, getCartSelector, removeItemFromCart, setProductCount, removeProductFromCart,
+  addItemToCart, getCartSelector,
+  removeItemFromCart, setProductCount, removeProductFromCart, toggleIsChecked,
 } from '../../redux/slices/cartSlice';
 
 export function CartItem({
@@ -9,7 +11,7 @@ export function CartItem({
   const dispatch = useDispatch();
 
   const state = useSelector(getCartSelector);
-  const { count } = state.find((el) => el.id === id);
+  const { count, isChecked } = state.find((el) => el.id === id);
   if (count > stock) {
     dispatch(setProductCount({ id, count: stock }));
   }
@@ -26,8 +28,25 @@ export function CartItem({
     dispatch(removeProductFromCart(id));
   };
 
+  const toggleProductIsChecked = () => {
+    dispatch(toggleIsChecked(id));
+  };
+
   return (
     <div className="card" style={{ width: '18rem' }}>
+      <div className="form-check">
+        <input
+          className="form-check-input"
+          onClick={toggleProductIsChecked}
+          type="checkbox"
+          value=""
+          checked={isChecked}
+          id={id}
+        />
+        <label className="form-check-label" htmlFor={id}>
+          Выбрать
+        </label>
+      </div>
       <img src={pictures} className="card-img-top" alt="..." />
       <div className="card-body">
         <h5 className="card-title">{name}</h5>

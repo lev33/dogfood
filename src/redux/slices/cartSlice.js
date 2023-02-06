@@ -37,11 +37,15 @@ const cartSlice = createSlice({
     removeProductFromCart(state, action) {
       return state.filter((el) => el.id !== action.payload);
     },
+    toggleIsChecked(state, action) {
+      const currentIndex = state.findIndex((el) => el.id === action.payload);
+      state[currentIndex].isChecked = !state[currentIndex].isChecked;
+    },
   },
 });
 
 export const {
-  addItemToCart, removeItemFromCart, setProductCount, removeProductFromCart,
+  addItemToCart, removeItemFromCart, setProductCount, removeProductFromCart, toggleIsChecked,
 } = cartSlice.actions;
 
 export const getCartSelector = (state) => state.cart;
