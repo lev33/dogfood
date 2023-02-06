@@ -93,6 +93,18 @@ class DogFoodApi {
 
     return res.json();
   }
+
+  getProductsByIds(ids) {
+    this.checkToken();
+
+    return Promise.all(ids.map((id) => fetch(`${this.baseUrl}/products/${id}`, {
+      headers: {
+        authorization: this.getAuthorizationHeader(),
+        'Content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json())));
+  }
 }
 
 export const dogFoodApi = new DogFoodApi({ baseUrl: 'https://api.react-learning.ru' });

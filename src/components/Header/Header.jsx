@@ -2,12 +2,14 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { dogFoodApi } from '../../api/DogFoodApi';
+import { getCartSelector } from '../../redux/slices/cartSlice';
 import { clearLS } from '../../redux/slices/userSlice';
 import headerStyles from './header.module.css';
 
 export function Header() {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
+  const count = useSelector(getCartSelector).length;
 
   console.log('Header', { token });
 
@@ -28,7 +30,17 @@ export function Header() {
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/products"
             >
-              Products
+              Продукты
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
+              to="/cart"
+            >
+
+              {`Корзина ${count}`}
+
             </NavLink>
           </li>
           <li>

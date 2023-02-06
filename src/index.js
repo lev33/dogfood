@@ -6,6 +6,7 @@ import './index.css';
 import { Provider } from 'react-redux';
 import App from './App';
 import { Main } from './components/Main/Main';
+import { CartPage } from './components/Pages/CartPage/CartPage';
 import { ProductsPage } from './components/Pages/ProductsPage/ProductsPage';
 import { AuthenticationPage } from './components/Pages/AuthenticationPage/AuthenticationPage';
 import { RegistrationPage } from './components/Pages/RegistrationPage/RegistrationPage';
@@ -23,6 +24,10 @@ const myRouter = createBrowserRouter([
       {
         path: 'products',
         element: <ProductsPage />,
+      },
+      {
+        path: 'cart',
+        element: <CartPage />,
       },
       {
         path: 'signin',

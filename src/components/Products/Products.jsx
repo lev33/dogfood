@@ -6,6 +6,7 @@ import { ProductItem } from '../ProductItem/ProductItem';
 import { Search } from '../Search/Search';
 
 function ProductsInner({ query, data }) {
+  console.log({ data });
   const products = query ? data : data.products;
   if (!products.length) return <h1>Ничего не найдено...</h1>;
 
@@ -14,6 +15,7 @@ function ProductsInner({ query, data }) {
       {products.map((product) => (
         <ProductItem
           key={product._id}
+          id={product._id}
           name={product.name}
           pictures={product.pictures}
           description={product.description}
