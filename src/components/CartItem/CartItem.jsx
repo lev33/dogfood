@@ -37,7 +37,7 @@ export function CartItem({
       <div className="form-check">
         <input
           className="form-check-input"
-          onClick={toggleProductIsChecked}
+          onChange={toggleProductIsChecked}
           type="checkbox"
           value=""
           checked={isChecked}

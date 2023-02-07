@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { useQuery } from '@tanstack/react-query';
 import { dogFoodApi } from '../../api/DogFoodApi';
 import { withQuery } from '../HOCs/withQuery';
@@ -12,10 +11,10 @@ function ProductsInner({ query, data }) {
 
   return (
     <ul className="d-flex p-2 flex-wrap align-items-center justify-content-around">
-      {products.map((product) => (
+      {products.map(({ _id: id, ...product }) => (
         <ProductItem
-          key={product._id}
-          id={product._id}
+          key={id}
+          id={id}
           name={product.name}
           pictures={product.pictures}
           description={product.description}

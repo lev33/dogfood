@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -16,10 +15,10 @@ function CartInner({ data }) {
     <>
       <CartResult data={data} />
       <ul className="p-2 align-items-center justify-content-around">
-        {products.map((product) => (
+        {products.map(({ _id: id, ...product }) => (
           <CartItem
-            key={product._id}
-            id={product._id}
+            key={id}
+            id={id}
             name={product.name}
             pictures={product.pictures}
             price={product.price}
