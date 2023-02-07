@@ -56,18 +56,18 @@ export function AuthenticationPage() {
     >
       <Form className="d-grid gap-2 col-6 mx-auto">
         <MyTextInput
-          label="Email Address"
+          label="Email"
           name="email"
           type="email"
-          placeholder="email here"
+          placeholder="email"
         />
         <MyTextInput
-          label="Password"
+          label="Пароль"
           name="password"
           type="text"
-          placeholder="password here"
+          placeholder="пароль"
         />
-        <button disabled={isLoading} type="submit" className="btn btn-primary">Submit</button>
+        <button disabled={isLoading} type="submit" className="btn btn-primary">Войти</button>
       </Form>
     </Formik>
   );
