@@ -1,19 +1,15 @@
+/* eslint-disable class-methods-use-this */
 class DogFoodApi {
   constructor({ baseUrl }) {
     this.baseUrl = baseUrl;
-    this.token = '';
   }
 
-  getAuthorizationHeader() {
-    return `Bearer ${this.token}`;
+  getAuthorizationHeader(token) {
+    return `Bearer ${token}`;
   }
 
-  setToken(token) {
-    this.token = token;
-  }
-
-  checkToken() {
-    if (!this.token) throw new Error('Отсутствует токен');
+  checkToken(token) {
+    if (!token) throw new Error('Отсутствует токен');
   }
 
   async signIn(values) {
@@ -50,12 +46,12 @@ class DogFoodApi {
     return res.json();
   }
 
-  async getAllProducts() {
-    this.checkToken();
+  async getAllProducts(token) {
+    this.checkToken(token);
 
     const res = await fetch(`${this.baseUrl}/products`, {
       headers: {
-        authorization: this.getAuthorizationHeader(),
+        authorization: this.getAuthorizationHeader(token),
         'Content-type': 'application/json',
       },
     });
@@ -72,12 +68,12 @@ class DogFoodApi {
     return res.json();
   }
 
-  async getQueryProducts(query) {
-    this.checkToken();
+  async getQueryProducts(query, token) {
+    this.checkToken(token);
 
     const res = await fetch(`${this.baseUrl}/products/search?query=${query}`, {
       headers: {
-        authorization: this.getAuthorizationHeader(),
+        authorization: this.getAuthorizationHeader(token),
         'Content-type': 'application/json',
       },
     });
@@ -94,12 +90,12 @@ class DogFoodApi {
     return res.json();
   }
 
-  getProductsByIds(ids) {
-    this.checkToken();
+  getProductsByIds(ids, token) {
+    this.checkToken(token);
 
     return Promise.all(ids.map((id) => fetch(`${this.baseUrl}/products/${id}`, {
       headers: {
-        authorization: this.getAuthorizationHeader(),
+        authorization: this.getAuthorizationHeader(token),
         'Content-type': 'application/json',
       },
     })

@@ -44,7 +44,6 @@ export function AuthenticationPage() {
     dispatch(addUser({
       group: res.data.group, name: res.data.name, email: res.data.email, token: res.token,
     }));
-    dogFoodApi.setToken(res.token);
     console.log({ values, res });
   };
 

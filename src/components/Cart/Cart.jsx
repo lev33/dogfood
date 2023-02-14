@@ -34,11 +34,13 @@ const CartInnerWithQuery = withQuery(CartInner);
 
 export function Cart() {
   const cart = useSelector((store) => store.cart);
+  const { token } = useSelector((state) => state.user);
+
   const {
     data, isLoading, isError, error, refetch,
   } = useQuery({
     queryKey: ['CartFetch', cart.length],
-    queryFn: () => dogFoodApi.getProductsByIds(cart.map((el) => el.id)),
+    queryFn: () => dogFoodApi.getProductsByIds(cart.map((el) => el.id), token),
   });
 
   useEffect(() => {}, [cart.length]);
