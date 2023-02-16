@@ -1,4 +1,15 @@
-export function ProductItem({ name, pictures, description }) {
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from '../../redux/slices/cartSlice';
+
+export function ProductItem({
+  id, name, pictures, description,
+}) {
+  const dispatch = useDispatch();
+
+  const addToCartHandler = () => {
+    dispatch(addItemToCart(id));
+  };
+
   return (
     <div className="card" style={{ width: '18rem' }}>
       <img src={pictures} className="card-img-top" alt="..." />
@@ -7,7 +18,13 @@ export function ProductItem({ name, pictures, description }) {
         <p className="card-text">
           {description}
         </p>
-        <a href="google.com" className="btn btn-primary">Go somewhere</a>
+        <button
+          onClick={addToCartHandler}
+          type="button"
+          className="btn btn-success"
+        >
+          Добавить в корзину
+        </button>
       </div>
     </div>
   );

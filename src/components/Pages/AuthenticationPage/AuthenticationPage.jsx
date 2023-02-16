@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { dogFoodApi } from '../../../api/DogFoodApi';
-import { useTokenContext, useTokenMethodsContext } from '../../../contexts/TokenContextProvider';
+import { addUser } from '../../../redux/slices/userSlice';
 import { authenticationFormValidationSchema } from './validator';
 
 const initialValues = {
@@ -25,9 +26,9 @@ function MyTextInput({ label, ...props }) {
 }
 
 export function AuthenticationPage() {
-  const token = useTokenContext();
-  const { addToken } = useTokenMethodsContext();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
 
   useEffect(() => {
     console.log('Authentication', { token });
@@ -40,7 +41,9 @@ export function AuthenticationPage() {
 
   const submitHandler = async (values) => {
     const res = await mutateAsync(values);
-    addToken(res.token);
+    dispatch(addUser({
+      group: res.data.group, name: res.data.name, email: res.data.email, token: res.token,
+    }));
     console.log({ values, res });
   };
 
@@ -52,18 +55,18 @@ export function AuthenticationPage() {
     >
       <Form className="d-grid gap-2 col-6 mx-auto">
         <MyTextInput
-          label="Email Address"
+          label="Email"
           name="email"
           type="email"
-          placeholder="email here"
+          placeholder="email"
         />
         <MyTextInput
-          label="Password"
+          label="Пароль"
           name="password"
           type="text"
-          placeholder="password here"
+          placeholder="пароль"
         />
-        <button disabled={isLoading} type="submit" className="btn btn-primary">Submit</button>
+        <button disabled={isLoading} type="submit" className="btn btn-primary">Войти</button>
       </Form>
     </Formik>
   );

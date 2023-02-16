@@ -1,13 +1,20 @@
 import classNames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import { useTokenContext, useTokenMethodsContext } from '../../contexts/TokenContextProvider';
+import { getCartSelector } from '../../redux/slices/cartSlice';
+import { clearLS } from '../../redux/slices/userSlice';
 import headerStyles from './header.module.css';
 
 export function Header() {
-  const token = useTokenContext();
-  const { clearLS } = useTokenMethodsContext();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
+  const count = useSelector(getCartSelector).length;
 
   console.log('Header', { token });
+
+  const clickLogOutHandler = () => {
+    dispatch(clearLS());
+  };
 
   return (
     <header className={headerStyles.wr}>
@@ -21,8 +28,18 @@ export function Header() {
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/products"
             >
-              Products
+              Продукты
             </NavLink>
+          </li>
+          <li>
+            { token && (
+            <NavLink
+              className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
+              to="/cart"
+            >
+              {`Корзина ${count}`}
+            </NavLink>
+            )}
           </li>
           <li>
             { !token && (
@@ -47,7 +64,7 @@ export function Header() {
           <li>
             { token && (
             <button
-              onClick={clearLS}
+              onClick={clickLogOutHandler}
               type="submit"
               className="btn btn-warning"
             >
