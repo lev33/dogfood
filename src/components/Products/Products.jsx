@@ -32,11 +32,12 @@ export function Products({ query }) {
   const { token } = useSelector(getUserSelector);
 
   const {
-    data, isLoading, isError, error, refetch,
+    data, isLoading, isFetching, isError, error, refetch,
   } = useQuery({
     queryKey: ['ProductsFetch', query],
     queryFn: () => (query ? dogFoodApi.getQueryProducts(query, token)
       : dogFoodApi.getAllProducts(token)),
+    keepPreviousData: true,
   });
 
   return (
@@ -46,6 +47,7 @@ export function Products({ query }) {
         query={query}
         data={data}
         isLoading={isLoading}
+        isFetching={isFetching}
         isError={isError}
         error={error}
         refetch={refetch}
