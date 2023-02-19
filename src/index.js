@@ -11,6 +11,7 @@ import { ProductsPage } from './components/Pages/ProductsPage/ProductsPage';
 import { AuthenticationPage } from './components/Pages/AuthenticationPage/AuthenticationPage';
 import { RegistrationPage } from './components/Pages/RegistrationPage/RegistrationPage';
 import { store } from './redux/store';
+import { UserPage } from './components/Pages/UserPage/UserPage';
 
 const myRouter = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const myRouter = createBrowserRouter([
       {
         path: 'cart',
         element: <CartPage />,
+      },
+      {
+        path: 'user',
+        element: <UserPage />,
       },
       {
         path: 'signin',

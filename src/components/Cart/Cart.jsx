@@ -25,7 +25,7 @@ function CartInner({ data }) {
             Продукты
           </button>
         </Link>
-        <Link to="/cart">
+        <Link to="/user">
           <button type="button" className="btn btn-primary">
             Профиль?
           </button>
