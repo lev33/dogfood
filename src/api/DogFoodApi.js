@@ -101,6 +101,28 @@ class DogFoodApi {
     })
       .then((res) => res.json())));
   }
+
+  async getUserInfo(group, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/v2/${group}/users/me`, {
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при получении профиля пользователя. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при получении профиля пользователя. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
 }
 
 export const dogFoodApi = new DogFoodApi({ baseUrl: 'https://api.react-learning.ru' });

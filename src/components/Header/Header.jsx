@@ -47,7 +47,7 @@ export function Header() {
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/user"
             >
-              Пользователь
+              Профиль
             </NavLink>
             )}
           </li>
