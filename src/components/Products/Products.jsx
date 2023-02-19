@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { dogFoodApi } from '../../api/DogFoodApi';
+import { getUserSelector } from '../../redux/slices/userSlice';
 import { withQuery } from '../HOCs/withQuery';
 import { ProductItem } from '../ProductItem/ProductItem';
 import { Search } from '../Search/Search';
@@ -28,7 +29,7 @@ function ProductsInner({ query, data }) {
 const ProductsInnerWithQuery = withQuery(ProductsInner);
 
 export function Products({ query }) {
-  const { token } = useSelector((state) => state.user);
+  const { token } = useSelector(getUserSelector);
 
   const {
     data, isLoading, isError, error, refetch,

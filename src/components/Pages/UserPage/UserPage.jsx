@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { dogFoodApi } from '../../../api/DogFoodApi';
+import { getUserSelector } from '../../../redux/slices/userSlice';
 import { withQuery } from '../../HOCs/withQuery';
 
 function UserInner({ data }) {
@@ -37,7 +38,7 @@ export function UserPage() {
   const navigate = useNavigate();
   const {
     group, token,
-  } = useSelector((state) => state.user);
+  } = useSelector(getUserSelector);
 
   const {
     data, isLoading, isError, error, refetch,

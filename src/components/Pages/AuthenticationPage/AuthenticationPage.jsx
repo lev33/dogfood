@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { dogFoodApi } from '../../../api/DogFoodApi';
-import { addUser } from '../../../redux/slices/userSlice';
+import { addUser, getUserSelector } from '../../../redux/slices/userSlice';
 import { authenticationFormValidationSchema } from './validator';
 
 const initialValues = {
@@ -28,7 +28,7 @@ function MyTextInput({ label, ...props }) {
 export function AuthenticationPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.user);
+  const { token } = useSelector(getUserSelector);
 
   useEffect(() => {
     console.log('Authentication', { token });

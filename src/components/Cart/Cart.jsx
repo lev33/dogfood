@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { dogFoodApi } from '../../api/DogFoodApi';
+import { getCartSelector } from '../../redux/slices/cartSlice';
+import { getUserSelector } from '../../redux/slices/userSlice';
 import { CartItem } from '../CartItem/CartItem';
 import { CartResult } from '../CartResult/CartResult';
 import { withQuery } from '../HOCs/withQuery';
@@ -62,21 +64,28 @@ function CartInner({ data }) {
 const CartInnerWithQuery = withQuery(CartInner);
 
 export function Cart() {
-  const cart = useSelector((store) => store.cart);
-  const { token } = useSelector((state) => state.user);
+  const cart = useSelector(getCartSelector);
+  const ids = cart.map((el) => el.id);
+  console.log({ ids });
+  const { token } = useSelector(getUserSelector);
 
   const {
     data, isLoading, isError, error, refetch,
   } = useQuery({
     queryKey: ['CartFetch', cart.length],
     queryFn: () => dogFoodApi.getProductsByIds(cart.map((el) => el.id), token),
+    keepPreviousData: true,
   });
+
+  // eslint-disable-next-line no-underscore-dangle
+  const filteredData = data && data.filter((el) => ids.includes(el._id));
+  console.log({ filteredData });
 
   useEffect(() => {}, [cart.length]);
 
   return (
     <CartInnerWithQuery
-      data={data}
+      data={filteredData}
       isLoading={isLoading}
       isError={isError}
       error={error}

@@ -10,6 +10,10 @@ export function ProductItem({
     dispatch(addItemToCart(id));
   };
 
+  const productInfoHandler = () => {
+    dispatch(addItemToCart(id));
+  };
+
   return (
     <div className="card" style={{ width: '18rem' }}>
       <img src={pictures} className="card-img-top" alt="..." />
@@ -24,6 +28,13 @@ export function ProductItem({
           className="btn btn-success"
         >
           Добавить в корзину
+        </button>
+        <button
+          onClick={productInfoHandler}
+          type="button"
+          className="btn btn-success"
+        >
+          О товаре
         </button>
       </div>
     </div>
