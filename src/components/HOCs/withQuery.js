@@ -19,7 +19,7 @@ export const withQuery = (WrappedComponent) => function ({
           type="button"
           className="btn btn-primary"
         >
-          Refetch
+          Повторить
         </button>
       </div>
     );
@@ -31,7 +31,6 @@ export const withQuery = (WrappedComponent) => function ({
     <>
       {isFetching && <Loader />}
       <WrappedComponent {...rest} />
-      ;
     </>
   );
 };
