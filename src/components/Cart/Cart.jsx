@@ -1,6 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { dogFoodApi } from '../../api/DogFoodApi';
@@ -73,22 +73,31 @@ export function Cart() {
     data, isLoading, isError, error, refetch,
   } = useQuery({
     queryKey: ['CartFetch', cart.length],
-    queryFn: () => dogFoodApi.getProductsByIds(cart.map((el) => el.id), token),
+    queryFn: () => dogFoodApi.getProductsByIds(ids, token),
     keepPreviousData: true,
   });
 
-  // eslint-disable-next-line no-underscore-dangle
+  if (data) {
+    const idsFromServer = data.map((el) => el._id);
+    console.log({ idsFromServer });
+  }
+
+  // console.log({ data });
   const filteredData = data && data.filter((el) => ids.includes(el._id));
   console.log({ filteredData });
 
-  useEffect(() => {}, [cart.length]);
+  const isIdError = data && ids.length !== filteredData.length;
+  const idError = isIdError ? { message: 'idError' } : null;
+  console.log({
+    isError, error, isIdError, idError,
+  });
 
   return (
     <CartInnerWithQuery
       data={filteredData}
       isLoading={isLoading}
-      isError={isError}
-      error={error}
+      isError={isError || isIdError}
+      error={error || idError}
       refetch={refetch}
     />
   );
