@@ -32,6 +32,14 @@ export function Header() {
             </NavLink>
           </li>
           <li>
+            <NavLink
+              className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
+              to="/favourites"
+            >
+              Избранное
+            </NavLink>
+          </li>
+          <li>
             { token && (
             <NavLink
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}

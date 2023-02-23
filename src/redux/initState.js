@@ -8,6 +8,7 @@ export const initState = {
     token: '',
   },
   cart: [],
+  favourites: [],
   filter: {
     search: '',
     sort: '',

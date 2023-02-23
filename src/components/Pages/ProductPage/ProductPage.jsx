@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { dogFoodApi } from '../../../api/DogFoodApi';
 import { addItemToCart } from '../../../redux/slices/cartSlice';
+import { addProductToFavourites } from '../../../redux/slices/favouritesSlice';
 import { getUserSelector } from '../../../redux/slices/userSlice';
 import { withQuery } from '../../HOCs/withQuery';
 import { ReviewItem } from '../../ReviewItem/ReviewItem';
@@ -17,6 +18,10 @@ function ProductInner({ data }) {
 
   const addToCartHandler = () => {
     dispatch(addItemToCart(id));
+  };
+
+  const addToFavouritesHandler = () => {
+    dispatch(addProductToFavourites(id));
   };
 
   return (
@@ -59,6 +64,13 @@ function ProductInner({ data }) {
             className="btn btn-success"
           >
             Добавить в корзину
+          </button>
+          <button
+            onClick={addToFavouritesHandler}
+            type="button"
+            className="btn btn-success"
+          >
+            Добавить в избранное
           </button>
         </div>
       </div>
