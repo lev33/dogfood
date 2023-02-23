@@ -102,6 +102,43 @@ class DogFoodApi {
       .then((res) => res.json())));
   }
 
+  async addNewProduct(values, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products`, {
+      method: 'POST',
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
+
+    return res.json();
+  }
+
+  async getProductById(id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/${id}`, {
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при получении товара. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при получении товара. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
   async getUserInfo(group, token) {
     this.checkToken(token);
 

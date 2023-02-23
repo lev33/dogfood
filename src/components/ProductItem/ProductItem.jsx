@@ -1,17 +1,20 @@
+/* eslint-disable no-template-curly-in-string */
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { addItemToCart } from '../../redux/slices/cartSlice';
 
 export function ProductItem({
   id, name, pictures, description,
 }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const addToCartHandler = () => {
     dispatch(addItemToCart(id));
   };
 
   const productInfoHandler = () => {
-    dispatch(addItemToCart(id));
+    navigate(`/products/${id}`);
   };
 
   return (
@@ -32,7 +35,7 @@ export function ProductItem({
         <button
           onClick={productInfoHandler}
           type="button"
-          className="btn btn-success"
+          className="btn btn-primary"
         >
           О товаре
         </button>

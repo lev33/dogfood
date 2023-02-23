@@ -1,34 +1,60 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { dogFoodApi } from '../../../api/DogFoodApi';
 import { getUserSelector } from '../../../redux/slices/userSlice';
 import { withQuery } from '../../HOCs/withQuery';
+import { AddProductModal } from './AddProductModal';
 
 function UserInner({ data }) {
   console.log({ data });
   const {
     about, avatar, group, name, email,
   } = data;
+
+  const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
+
+  const closeDeleteModalHandler = () => {
+    setIsShowDeleteModal(false);
+  };
+
+  const openDeleteModalHandler = () => {
+    setIsShowDeleteModal(true);
+  };
+
   return (
-    <div className="card" style={{ width: '18rem' }}>
-      <img src={avatar} className="card-img-top" alt="..." />
-      <div className="card-body">
-        <h5 className="card-title">{name}</h5>
-        <p className="card-text">
-          {about}
-        </p>
-        <p className="card-text">
-          {'группа: '}
-          {group}
-        </p>
-        <p className="card-text">
-          {'email: '}
-          {email}
-        </p>
+    <>
+      <div className="card" style={{ width: '18rem' }}>
+        <img src={avatar} className="card-img-top" alt="..." />
+        <div className="card-body">
+          <h5 className="card-title">{name}</h5>
+          <p className="card-text">
+            {about}
+          </p>
+          <p className="card-text">
+            {'группа: '}
+            {group}
+          </p>
+          <p className="card-text">
+            {'email: '}
+            {email}
+          </p>
+          <button
+            onClick={openDeleteModalHandler}
+            type="button"
+            className="btn btn-primary"
+          >
+            Добавить товар
+          </button>
+        </div>
       </div>
-    </div>
+      <AddProductModal
+        closeHandler={closeDeleteModalHandler}
+        isOpen={isShowDeleteModal}
+        name={name}
+      />
+    </>
   );
 }
 
