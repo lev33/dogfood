@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,9 +12,10 @@ import { ReviewItem } from '../../ReviewItem/ReviewItem';
 
 function ProductInner({ data }) {
   console.log({ data });
+  const user = useSelector(getUserSelector);
   const dispatch = useDispatch();
   const {
-    _id: id, name, pictures, price, stock, reviews,
+    _id: id, name, pictures, price, stock, reviews, author,
   } = data;
 
   const addToCartHandler = () => {
@@ -41,23 +43,25 @@ function ProductInner({ data }) {
             {' '}
             {stock}
           </p>
-
-          <button
-            onClick={() => { }}
-            type="button"
-            className="btn btn-light"
-            disabled={false}
-          >
-            +
-          </button>
-          <span>{' '}</span>
-          <button
-            onClick={() => { }}
-            type="button"
-            className="btn btn-danger"
-          >
-            Удалить
-          </button>
+          { author._id === user.id && (
+          <>
+            <button
+              onClick={() => { }}
+              type="button"
+              className="btn btn-primary"
+            >
+              Редактировать
+            </button>
+            <span>{' '}</span>
+            <button
+              onClick={() => { }}
+              type="button"
+              className="btn btn-danger"
+            >
+              Удалить
+            </button>
+          </>
+          )}
           <button
             onClick={addToCartHandler}
             type="button"
@@ -74,6 +78,7 @@ function ProductInner({ data }) {
           </button>
         </div>
       </div>
+      <div>Добавить форму отзыва</div>
       <div>
         <ul
           className="d-flex flex-column p-2"

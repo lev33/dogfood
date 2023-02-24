@@ -28,23 +28,27 @@ function MyTextInput({ label, ...props }) {
 export function AuthenticationPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { token } = useSelector(getUserSelector);
+  const user = useSelector(getUserSelector);
 
   useEffect(() => {
-    console.log('Authentication', { token });
-    if (token) navigate('/products');
-  }, [token]);
+    console.log('Authentication', { user });
+    if (user.token) navigate('/products');
+  }, [user.token]);
 
   const { mutateAsync, isLoading } = useMutation({
     mutationFn: (data) => dogFoodApi.signIn(data),
   });
 
   const submitHandler = async (values) => {
-    const res = await mutateAsync(values);
+    const {
+      data: {
+        group, name, email, _id: id,
+      }, token,
+    } = await mutateAsync(values);
     dispatch(addUser({
-      group: res.data.group, name: res.data.name, email: res.data.email, token: res.token,
+      group, name, email, token, id,
     }));
-    console.log({ values, res });
+    console.log({ values, token });
   };
 
   return (

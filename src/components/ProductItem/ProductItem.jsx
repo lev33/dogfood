@@ -2,6 +2,7 @@
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addItemToCart } from '../../redux/slices/cartSlice';
+import { addProductToFavourites } from '../../redux/slices/favouritesSlice';
 
 export function ProductItem({
   id, name, pictures, description,
@@ -11,6 +12,10 @@ export function ProductItem({
 
   const addToCartHandler = () => {
     dispatch(addItemToCart(id));
+  };
+
+  const addToFavouritesHandler = () => {
+    dispatch(addProductToFavourites(id));
   };
 
   const productInfoHandler = () => {
@@ -31,6 +36,13 @@ export function ProductItem({
           className="btn btn-success"
         >
           Добавить в корзину
+        </button>
+        <button
+          onClick={addToFavouritesHandler}
+          type="button"
+          className="btn btn-success"
+        >
+          Добавить в избранное
         </button>
         <button
           onClick={productInfoHandler}

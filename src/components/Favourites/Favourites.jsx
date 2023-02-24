@@ -66,7 +66,7 @@ export function Favourites() {
   const {
     data, isLoading, isError, error, refetch,
   } = useQuery({
-    queryKey: ['CartFetch', favourites.length],
+    queryKey: ['FavouritesFetch', favourites],
     queryFn: () => dogFoodApi.getProductsByIds(favourites, token),
     keepPreviousData: true,
   });
