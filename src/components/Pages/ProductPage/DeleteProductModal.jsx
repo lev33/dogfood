@@ -24,7 +24,10 @@ export function DeleteProductModal({
     <Modal isOpen={isOpen} closeHandler={closeHandler}>
       <h4 className="text-center mb-5">
         Вы действительно хотите удалить товар:
-        <b>{name}</b>
+        <b>
+          {' '}
+          {name}
+        </b>
       </h4>
       <div className="d-flex justify-content-center">
         <button

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useMutation } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
 import { useSelector } from 'react-redux';
@@ -27,6 +28,21 @@ function MyTextInput({ label, ...props }) {
         <div className="error">{meta.error}</div>
       ) : null}
     </>
+  );
+}
+
+function MyCheckbox({ children, ...props }) {
+  const [field, meta] = useField({ ...props, type: 'checkbox' });
+  return (
+    <div>
+      <label className="checkbox-input">
+        <input type="checkbox" {...field} {...props} />
+        {children}
+      </label>
+      {meta.touched && meta.error ? (
+        <div className="error">{meta.error}</div>
+      ) : null}
+    </div>
   );
 }
 
@@ -92,11 +108,10 @@ export function ProductAddPage() {
           type="text"
           placeholder="описание"
         />
-        <MyTextInput
-          label="Доступен"
-          name="available"
-          type="text"
-        />
+        <MyCheckbox name="available">
+          {' '}
+          Товар доступен
+        </MyCheckbox>
         <button
           disabled={isLoading}
           type="submit"
