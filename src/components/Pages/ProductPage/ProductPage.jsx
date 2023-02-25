@@ -8,6 +8,7 @@ import { addItemToCart } from '../../../redux/slices/cartSlice';
 import { addProductToFavourites } from '../../../redux/slices/favouritesSlice';
 import { getUserSelector } from '../../../redux/slices/userSlice';
 import { withQuery } from '../../HOCs/withQuery';
+import { ReviewForm } from '../../ReviewForm/ReviewForm';
 import { ReviewItem } from '../../ReviewItem/ReviewItem';
 import { DeleteProductModal } from './DeleteProductModal';
 import { EditProductModal } from './EditProductModal';
@@ -99,18 +100,17 @@ function ProductInner({ data }) {
           </button>
         </div>
       </div>
-      <div>Добавить форму отзыва</div>
+      <ReviewForm id={id} />
       <div>
         <ul
           className="d-flex flex-column p-2"
         >
           {reviews && reviews.map(({
-            _id: rewiewId, text, rating,
+            _id: rewiewId, ...review
           }) => (
             <ReviewItem
               key={rewiewId}
-              price={rating}
-              stock={text}
+              review={review}
             />
           ))}
         </ul>

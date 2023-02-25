@@ -1,22 +1,35 @@
 export function ReviewItem({
-  price, stock,
+  review,
 }) {
+  const createdAt = new Date(Date.parse(review.created_at));
+  const updatedAt = new Date(Date.parse(review.updated_at));
+  const formattedCreatedAt = createdAt.toLocaleString(createdAt);
+  const formattedUpdatedAt = updatedAt.toLocaleString(updatedAt);
   return (
-    <div className="card" style={{ width: '18rem' }}>
-
-      <div className="card-body">
-        <p className="card-text">
-          Рейтинг:
+    <li>
+      <div>
+        <div>
+          Автор
           {' '}
-          {price}
-        </p>
-        <p className="card-text">
-          Отзыв:
+          {review.author}
+          ,
           {' '}
-          {stock}
-        </p>
-
+          {formattedCreatedAt}
+          {(formattedCreatedAt !== formattedUpdatedAt) && (
+            <div>
+              Обновлено
+              {' '}
+              {formattedUpdatedAt}
+            </div>
+          )}
+        </div>
+        <div>
+          Оценка
+          {' '}
+          {review.rating}
+        </div>
       </div>
-    </div>
+      {review.text}
+    </li>
   );
 }
