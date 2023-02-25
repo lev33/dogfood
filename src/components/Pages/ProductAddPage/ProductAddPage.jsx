@@ -30,7 +30,7 @@ function MyTextInput({ label, ...props }) {
   );
 }
 
-export function NewProductForm() {
+export function ProductAddPage() {
   const navigate = useNavigate();
   const { token } = useSelector(getUserSelector);
 
@@ -41,7 +41,6 @@ export function NewProductForm() {
   const submitHandler = async (values) => {
     const { _id: id } = await mutateAsync(values);
     navigate(`/products/${id}`);
-    console.log({ values, id });
   };
 
   return (
@@ -103,7 +102,7 @@ export function NewProductForm() {
           type="submit"
           className="btn btn-primary"
         >
-          Зарегистрироваться
+          Отправить
         </button>
       </Form>
     </Formik>

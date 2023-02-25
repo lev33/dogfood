@@ -43,6 +43,16 @@ class DogFoodApi {
       body: JSON.stringify(values),
     });
 
+    if (res.status === 400) {
+      throw new Error('Некорректно заполнено одно из полей');
+    }
+    if (res.status === 409) {
+      throw new Error('Пользователь с указанным email уже существует');
+    }
+    if (res.status >= 401) {
+      throw new Error(`Ошибка, код ${res.status}`);
+    }
+
     return res.json();
   }
 
@@ -113,6 +123,62 @@ class DogFoodApi {
       },
       body: JSON.stringify(values),
     });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при добавлении товара. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при добавлении товара. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
+  async deleteProductById(id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/${id}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при удалении товара. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при удалении товара. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
+  async editProductById(values, id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/${id}`, {
+      method: 'PATCH',
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при обновлении товара. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при обновлении товара. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
 
     return res.json();
   }

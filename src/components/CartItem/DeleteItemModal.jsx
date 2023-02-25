@@ -15,8 +15,11 @@ export function DeleteItemModal({
   return (
     <Modal isOpen={isOpen} closeHandler={closeHandler}>
       <h4 className="text-center mb-5">
-        Вы действительно хотите удалить товар:
-        <b>{name}</b>
+        Вы действительно хотите удалить из корзины товар:
+        <b>
+          {' '}
+          {name}
+        </b>
       </h4>
       <div className="d-flex justify-content-center">
         <button

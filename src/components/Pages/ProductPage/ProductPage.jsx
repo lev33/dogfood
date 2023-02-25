@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { dogFoodApi } from '../../../api/DogFoodApi';
@@ -9,6 +9,8 @@ import { addProductToFavourites } from '../../../redux/slices/favouritesSlice';
 import { getUserSelector } from '../../../redux/slices/userSlice';
 import { withQuery } from '../../HOCs/withQuery';
 import { ReviewItem } from '../../ReviewItem/ReviewItem';
+import { DeleteProductModal } from './DeleteProductModal';
+import { EditProductModal } from './EditProductModal';
 
 function ProductInner({ data }) {
   console.log({ data });
@@ -17,6 +19,25 @@ function ProductInner({ data }) {
   const {
     _id: id, name, pictures, price, stock, reviews, author,
   } = data;
+
+  const [isShowEditModal, setIsShowEditModal] = useState(false);
+  const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
+
+  const closeEditModalHandler = () => {
+    setIsShowEditModal(false);
+  };
+
+  const openEditModalHandler = () => {
+    setIsShowEditModal(true);
+  };
+
+  const closeDeleteModalHandler = () => {
+    setIsShowDeleteModal(false);
+  };
+
+  const openDeleteModalHandler = () => {
+    setIsShowDeleteModal(true);
+  };
 
   const addToCartHandler = () => {
     dispatch(addItemToCart(id));
@@ -46,7 +67,7 @@ function ProductInner({ data }) {
           { author._id === user.id && (
           <>
             <button
-              onClick={() => { }}
+              onClick={openEditModalHandler}
               type="button"
               className="btn btn-primary"
             >
@@ -54,7 +75,7 @@ function ProductInner({ data }) {
             </button>
             <span>{' '}</span>
             <button
-              onClick={() => { }}
+              onClick={openDeleteModalHandler}
               type="button"
               className="btn btn-danger"
             >
@@ -94,6 +115,17 @@ function ProductInner({ data }) {
           ))}
         </ul>
       </div>
+      <EditProductModal
+        closeHandler={closeEditModalHandler}
+        isOpen={isShowEditModal}
+        data={data}
+      />
+      <DeleteProductModal
+        closeHandler={closeDeleteModalHandler}
+        isOpen={isShowDeleteModal}
+        name={name}
+        id={id}
+      />
     </>
   );
 }

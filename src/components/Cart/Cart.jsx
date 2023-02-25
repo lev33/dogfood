@@ -29,7 +29,7 @@ function CartInner({ data }) {
         </Link>
         <Link to="/user">
           <button type="button" className="btn btn-primary">
-            Профиль?
+            Профиль
           </button>
         </Link>
       </>
@@ -72,7 +72,7 @@ export function Cart() {
   const {
     data, isLoading, isError, error, refetch,
   } = useQuery({
-    queryKey: ['CartFetch', cart.length],
+    queryKey: ['CartFetch', cart],
     queryFn: () => dogFoodApi.getProductsByIds(ids, token),
     keepPreviousData: true,
   });
@@ -82,7 +82,6 @@ export function Cart() {
     console.log({ idsFromServer });
   }
 
-  // console.log({ data });
   const filteredData = data && data.filter((el) => ids.includes(el._id));
   console.log({ filteredData });
 

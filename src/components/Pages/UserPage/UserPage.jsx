@@ -15,11 +15,11 @@ function UserInner({ data }) {
 
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
 
-  const closeDeleteModalHandler = () => {
+  const closeAddProductModalHandler = () => {
     setIsShowDeleteModal(false);
   };
 
-  const openDeleteModalHandler = () => {
+  const openAddProductModalHandler = () => {
     setIsShowDeleteModal(true);
   };
 
@@ -41,7 +41,7 @@ function UserInner({ data }) {
             {email}
           </p>
           <button
-            onClick={openDeleteModalHandler}
+            onClick={openAddProductModalHandler}
             type="button"
             className="btn btn-primary"
           >
@@ -50,7 +50,7 @@ function UserInner({ data }) {
         </div>
       </div>
       <AddProductModal
-        closeHandler={closeDeleteModalHandler}
+        closeHandler={closeAddProductModalHandler}
         isOpen={isShowDeleteModal}
         name={name}
       />
