@@ -1,50 +1,30 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { changeSortFilter, getSortSelector } from '../../redux/slices/filterSlice';
-import styles from './Filters.module.css';
 
-const FILTERS = ['price', 'discount', 'updated_at'];
+import {
+  DATE_FILTER, FILTER_QUERY_NAME, PRICE_FILTER, SALES_FILTER,
+} from './constants';
+import { FilterItem } from './FilterItem';
+
+const FILTERS = [PRICE_FILTER, SALES_FILTER, DATE_FILTER];
 
 export function Filters() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const key = useSelector(getSortSelector);
-  const dispatch = useDispatch();
 
-  const clickFilterHandler = (filterName) => {
-    setSearchParams({
-      ...Object.fromEntries(searchParams.entries()),
-      filterName,
-    });
-    dispatch(changeSortFilter(key === filterName ? '' : filterName));
+  const clickFilterHandler = (filterType, isActive) => {
+    if (!isActive) searchParams.delete(FILTER_QUERY_NAME);
+    else searchParams.set(FILTER_QUERY_NAME, filterType);
+    setSearchParams(searchParams);
   };
 
   return (
-    <div className="d-flex gap-2 justify-content-center">
-      {FILTERS.map((filterName) => (
+    <div className="d-flex justify-content-center">
+      {FILTERS.map((filter) => (
         <FilterItem
-          key={filterName}
+          key={filter.name}
+          {...filter}
           clickFilterHandler={clickFilterHandler}
-          filterName={filterName}
         />
       ))}
     </div>
-  );
-}
-
-export function FilterItem({ filterName, clickFilterHandler }) {
-  const [searchParams] = useSearchParams();
-
-  const currentFilterName = searchParams.get('filterName');
-
-  const sortKey = useSelector(getSortSelector);
-
-  return (
-    <button
-      type="button"
-      className={filterName === currentFilterName && filterName === sortKey ? styles.active : ''}
-      onClick={() => clickFilterHandler(filterName)}
-    >
-      {filterName}
-    </button>
   );
 }

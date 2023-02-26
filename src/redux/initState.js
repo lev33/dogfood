@@ -12,7 +12,6 @@ export const initState = {
   favourites: [],
   filter: {
     search: '',
-    sort: '',
   },
 };
 

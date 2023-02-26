@@ -9,7 +9,7 @@ import { FavouritesItem } from '../FavouritesItem/FavouritesItem';
 import { withQuery } from '../HOCs/withQuery';
 
 function FavouritesInner({ data }) {
-  console.log('CartData', { data });
+  console.log('FavouritesData', { data });
   const products = data;
   if (!products.length) {
     return (

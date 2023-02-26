@@ -1,9 +1,7 @@
 export function ReviewItem({
   review,
 }) {
-  const createdAt = new Date(Date.parse(review.created_at));
   const updatedAt = new Date(Date.parse(review.updated_at));
-  const formattedCreatedAt = createdAt.toLocaleString(createdAt);
   const formattedUpdatedAt = updatedAt.toLocaleString(updatedAt);
   return (
     <li>
@@ -14,14 +12,7 @@ export function ReviewItem({
           {review.author}
           ,
           {' '}
-          {formattedCreatedAt}
-          {(formattedCreatedAt !== formattedUpdatedAt) && (
-            <div>
-              Обновлено
-              {' '}
-              {formattedUpdatedAt}
-            </div>
-          )}
+          {formattedUpdatedAt}
         </div>
         <div>
           Оценка
