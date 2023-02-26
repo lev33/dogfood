@@ -28,6 +28,8 @@ export function Header() {
           <li>
             <Link to="/">
               <GiDogHouse size={24} />
+              {' '}
+              <b>DogFood</b>
             </Link>
           </li>
           <li>
