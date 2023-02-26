@@ -8,7 +8,7 @@ import {
 import { DeleteItemModal } from './DeleteItemModal';
 
 export function CartItem({
-  id, name, pictures, price, stock,
+  id, name, pictures, description, price, wight, discount, stock,
 }) {
   const dispatch = useDispatch();
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
@@ -22,8 +22,9 @@ export function CartItem({
   };
 
   const state = useSelector(getCartSelector);
-  const { count, isChecked } = state.find((el) => el.id === id);
-  if (count > stock) {
+  // const { count, isChecked } = state.find((el) => el.id === id);
+  const currentItem = state.find((el) => el.id === id);
+  if (currentItem?.count > stock) {
     dispatch(setProductCount({ id, count: stock }));
   }
 
@@ -52,7 +53,7 @@ export function CartItem({
             onChange={toggleProductIsChecked}
             type="checkbox"
             value=""
-            checked={isChecked}
+            checked={currentItem?.isChecked}
             id={id}
           />
           <label className="form-check-label" htmlFor={id}>
@@ -63,38 +64,51 @@ export function CartItem({
         <div className="card-body">
           <h5 className="card-title">{name}</h5>
           <p className="card-text">
-            Цена
+            Цена:
             {' '}
             {price}
           </p>
           <p className="card-text">
-            В наличии
+            Скидка:
+            {' '}
+            {discount}
+          </p>
+          <p className="card-text">
+            В наличии:
             {' '}
             {stock}
           </p>
           <p className="card-text">
+            Вес:
+            {' '}
+            {wight}
+          </p>
+          <p className="card-text">
+            {description}
+          </p>
+          <p className="card-text">
             В корзине
             {' '}
-            {count}
+            {currentItem?.count}
           </p>
           <button
             onClick={removeItemFromCartHandler}
             type="button"
             className="btn btn-light"
-            disabled={count <= 1}
+            disabled={currentItem?.count <= 1}
           >
             -
           </button>
           <span className="card-text">
             {' '}
-            {count}
+            {currentItem?.count}
             {' '}
           </span>
           <button
             onClick={addItemToCartHandler}
             type="button"
             className="btn btn-light"
-            disabled={count >= stock}
+            disabled={currentItem?.count >= stock}
           >
             +
           </button>

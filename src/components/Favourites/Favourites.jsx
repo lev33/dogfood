@@ -46,7 +46,10 @@ function FavouritesInner({ data }) {
               id={id}
               name={product.name}
               pictures={product.pictures}
+              description={product.description}
               price={product.price}
+              wight={product.wight}
+              discount={product.discount}
               stock={product.stock}
             />
           ))}
@@ -90,8 +93,10 @@ export function Favourites() {
     <FavouritesInnerWithQuery
       data={filteredData}
       isLoading={isLoading}
-      isError={isError || isIdError}
-      error={error || idError}
+      // isError={isError || isIdError}
+      // error={error || idError}
+      isError={isError}
+      error={error}
       refetch={refetch}
     />
   );

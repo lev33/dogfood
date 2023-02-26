@@ -5,7 +5,7 @@ import { addItemToCart } from '../../redux/slices/cartSlice';
 import { addProductToFavourites } from '../../redux/slices/favouritesSlice';
 
 export function ProductItem({
-  id, name, pictures, description,
+  id, name, pictures, description, price, wight, discount, stock,
 }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,6 +27,26 @@ export function ProductItem({
       <img src={pictures} className="card-img-top" alt="..." />
       <div className="card-body">
         <h5 className="card-title">{name}</h5>
+        <p className="card-text">
+          Цена:
+          {' '}
+          {price}
+        </p>
+        <p className="card-text">
+          Скидка:
+          {' '}
+          {discount}
+        </p>
+        <p className="card-text">
+          В наличии:
+          {' '}
+          {stock}
+        </p>
+        <p className="card-text">
+          Вес:
+          {' '}
+          {wight}
+        </p>
         <p className="card-text">
           {description}
         </p>

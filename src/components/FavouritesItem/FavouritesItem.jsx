@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { DeleteItemModal } from './DeleteItemModal';
 
 export function FavouritesItem({
-  id, name, pictures, price, stock,
+  id, name, pictures, description, price, wight, discount, stock,
 }) {
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
 
@@ -21,16 +21,28 @@ export function FavouritesItem({
         <div className="card-body">
           <h5 className="card-title">{name}</h5>
           <p className="card-text">
-            Цена
+            Цена:
             {' '}
             {price}
           </p>
           <p className="card-text">
-            В наличии
+            Скидка:
+            {' '}
+            {discount}
+          </p>
+          <p className="card-text">
+            В наличии:
             {' '}
             {stock}
           </p>
-          <span>{' '}</span>
+          <p className="card-text">
+            Вес:
+            {' '}
+            {wight}
+          </p>
+          <p className="card-text">
+            {description}
+          </p>
           <button
             onClick={openDeleteModalHandler}
             type="button"
