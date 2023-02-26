@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai';
+import { GiDogHouse } from 'react-icons/gi';
 import { RxExit } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
@@ -25,7 +26,9 @@ export function Header() {
       <nav>
         <ul className={headerStyles.headerMenu}>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">
+              <GiDogHouse size={24} />
+            </Link>
           </li>
           <li>
             <NavLink

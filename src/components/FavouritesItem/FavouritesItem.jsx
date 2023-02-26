@@ -1,10 +1,16 @@
 import { useState } from 'react';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { addItemToCart } from '../../redux/slices/cartSlice';
 import { DeleteItemModal } from './DeleteItemModal';
 
 export function FavouritesItem({
   id, name, pictures, description, price, wight, discount, stock,
 }) {
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const closeDeleteModalHandler = () => {
     setIsShowDeleteModal(false);
@@ -12,6 +18,14 @@ export function FavouritesItem({
 
   const openDeleteModalHandler = () => {
     setIsShowDeleteModal(true);
+  };
+
+  const addToCartHandler = () => {
+    dispatch(addItemToCart(id));
+  };
+
+  const productInfoHandler = () => {
+    navigate(`/products/${id}`);
   };
 
   return (
@@ -43,6 +57,22 @@ export function FavouritesItem({
           <p className="card-text">
             {description}
           </p>
+          <button
+            onClick={addToCartHandler}
+            type="button"
+            className="btn btn-success"
+          >
+            <AiOutlineShoppingCart size={24} />
+          </button>
+          <span>{' '}</span>
+          <button
+            onClick={productInfoHandler}
+            type="button"
+            className="btn btn-primary"
+          >
+            О товаре
+          </button>
+          <span>{' '}</span>
           <button
             onClick={openDeleteModalHandler}
             type="button"
