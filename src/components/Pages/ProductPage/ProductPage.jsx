@@ -18,7 +18,7 @@ function ProductInner({ data }) {
   const user = useSelector(getUserSelector);
   const dispatch = useDispatch();
   const {
-    _id: id, name, pictures, price, stock, reviews, author,
+    _id: id, name, pictures, description, price, wight, discount, stock, reviews, author,
   } = data;
 
   const [isShowEditModal, setIsShowEditModal] = useState(false);
@@ -61,9 +61,22 @@ function ProductInner({ data }) {
             {price}
           </p>
           <p className="card-text">
+            Скидка:
+            {' '}
+            {discount}
+          </p>
+          <p className="card-text">
             В наличии
             {' '}
             {stock}
+          </p>
+          <p className="card-text">
+            Вес:
+            {' '}
+            {wight}
+          </p>
+          <p className="card-text">
+            {description}
           </p>
           { author._id === user.id && (
           <>
