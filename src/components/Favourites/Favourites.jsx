@@ -35,27 +35,21 @@ function FavouritesInner({ data }) {
   }
 
   return (
-    <div className="d-flex flex-row justify-content-between">
-      <div>
-        <ul
-          className="d-flex flex-column p-2"
-        >
-          {products.map(({ _id: id, ...product }) => (
-            <FavouritesItem
-              key={id}
-              id={id}
-              name={product.name}
-              pictures={product.pictures}
-              description={product.description}
-              price={product.price}
-              wight={product.wight}
-              discount={product.discount}
-              stock={product.stock}
-            />
-          ))}
-        </ul>
-      </div>
-    </div>
+    <ul className="d-flex p-2 flex-wrap align-items-center justify-content-around">
+      {products.map(({ _id: id, ...product }) => (
+        <FavouritesItem
+          key={id}
+          id={id}
+          name={product.name}
+          pictures={product.pictures}
+          description={product.description}
+          price={product.price}
+          wight={product.wight}
+          discount={product.discount}
+          stock={product.stock}
+        />
+      ))}
+    </ul>
   );
 }
 

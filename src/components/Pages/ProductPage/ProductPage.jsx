@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai';
 import { dogFoodApi } from '../../../api/DogFoodApi';
 import { addItemToCart } from '../../../redux/slices/cartSlice';
 import { addProductToFavourites } from '../../../redux/slices/favouritesSlice';
@@ -102,14 +103,15 @@ function ProductInner({ data }) {
             type="button"
             className="btn btn-success"
           >
-            Добавить в корзину
+            <AiOutlineShoppingCart size={24} />
           </button>
+          <span>{' '}</span>
           <button
             onClick={addToFavouritesHandler}
             type="button"
             className="btn btn-success"
           >
-            Добавить в избранное
+            <AiOutlineHeart size={24} />
           </button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 /* eslint-disable no-template-curly-in-string */
+import { AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addItemToCart } from '../../redux/slices/cartSlice';
@@ -55,15 +56,17 @@ export function ProductItem({
           type="button"
           className="btn btn-success"
         >
-          Добавить в корзину
+          <AiOutlineShoppingCart size={24} />
         </button>
+        <span>{' '}</span>
         <button
           onClick={addToFavouritesHandler}
           type="button"
           className="btn btn-success"
         >
-          Добавить в избранное
+          <AiOutlineHeart size={24} />
         </button>
+        <span>{' '}</span>
         <button
           onClick={productInfoHandler}
           type="button"

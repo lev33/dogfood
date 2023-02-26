@@ -1,14 +1,18 @@
 import classNames from 'classnames';
+import { AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai';
+import { RxExit } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { getCartSelector } from '../../redux/slices/cartSlice';
+import { getFavouritesSelector } from '../../redux/slices/favouritesSlice';
 import { clearLS, getUserSelector } from '../../redux/slices/userSlice';
 import headerStyles from './header.module.css';
 
 export function Header() {
   const dispatch = useDispatch();
   const { token } = useSelector(getUserSelector);
-  const count = useSelector(getCartSelector).length;
+  const cartCount = useSelector(getCartSelector).length;
+  const favouritesCount = useSelector(getFavouritesSelector).length;
 
   console.log('Header', { token });
 
@@ -32,12 +36,15 @@ export function Header() {
             </NavLink>
           </li>
           <li>
+            { token && (
             <NavLink
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/favourites"
             >
-              Избранное
+              <AiOutlineHeart size={24} />
+              {favouritesCount || null}
             </NavLink>
+            )}
           </li>
           <li>
             { token && (
@@ -45,7 +52,8 @@ export function Header() {
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/cart"
             >
-              {`Корзина ${count}`}
+              <AiOutlineShoppingCart size={24} />
+              {cartCount || null}
             </NavLink>
             )}
           </li>
@@ -96,7 +104,7 @@ export function Header() {
               type="submit"
               className="btn btn-warning"
             >
-              Выход
+              <RxExit />
             </button>
             )}
           </li>
