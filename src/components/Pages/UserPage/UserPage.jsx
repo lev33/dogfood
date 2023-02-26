@@ -25,28 +25,34 @@ function UserInner({ data }) {
 
   return (
     <>
-      <div className="card" style={{ width: '18rem' }}>
-        <img src={avatar} className="card-img-top" alt="..." />
-        <div className="card-body">
-          <h5 className="card-title">{name}</h5>
-          <p className="card-text">
-            {about}
-          </p>
-          <p className="card-text">
-            {'группа: '}
-            {group}
-          </p>
-          <p className="card-text">
-            {'email: '}
-            {email}
-          </p>
-          <button
-            onClick={openAddProductModalHandler}
-            type="button"
-            className="btn btn-primary"
-          >
-            Добавить товар
-          </button>
+      <div className="card mb-3">
+        <div className="row g-0">
+          <div className="col-md-6">
+            <img src={avatar} className="img-fluid rounded-start" alt="..." />
+          </div>
+          <div className="col-md-6">
+            <div className="card-body">
+              <h5 className="card-title">{name}</h5>
+              <p className="card-text">
+                {about}
+              </p>
+              <p className="card-text">
+                {'группа: '}
+                {group}
+              </p>
+              <p className="card-text">
+                {'email: '}
+                {email}
+              </p>
+              <button
+                onClick={openAddProductModalHandler}
+                type="button"
+                className="btn btn-primary"
+              >
+                Добавить товар
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <AddProductModal
