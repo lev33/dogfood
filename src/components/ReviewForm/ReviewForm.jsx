@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -28,6 +28,7 @@ function MyTextInput({ label, ...props }) {
 export function ReviewForm({ id }) {
   const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
   const { token } = useSelector(getUserSelector);
+  const queryClient = useQueryClient();
 
   function openReviewFormHandler() {
     setIsReviewFormOpen(true);
@@ -46,6 +47,9 @@ export function ReviewForm({ id }) {
   const submitHandler = async (values) => {
     await mutateAsync(values);
     setIsReviewFormOpen(false);
+    queryClient.invalidateQueries({
+      queryKey: ['ProductFetch'],
+    });
   };
 
   return (
@@ -53,6 +57,7 @@ export function ReviewForm({ id }) {
       {!isReviewFormOpen && (
         <button
           type="button"
+          className="btn btn-primary"
           onClick={openReviewFormHandler}
         >
           Добавить отзыв на товар
@@ -79,7 +84,7 @@ export function ReviewForm({ id }) {
             />
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-dark"
               onClick={closeReviewFormHandler}
             >
               Отмена

@@ -13,7 +13,7 @@ export function EditProductModal({
           {data.name}
         </b>
       </h4>
-      <ProductEditForm product={data} />
+      <ProductEditForm closeHandler={closeHandler} product={data} />
     </Modal>
   );
 }

@@ -9,7 +9,7 @@ export function ReviewItem({
         <div>
           Автор
           {' '}
-          {review.author}
+          <b>{review.author}</b>
           ,
           {' '}
           {formattedUpdatedAt}
@@ -17,7 +17,7 @@ export function ReviewItem({
         <div>
           Оценка
           {' '}
-          {review.rating}
+          <b>{review.rating}</b>
         </div>
       </div>
       {review.text}

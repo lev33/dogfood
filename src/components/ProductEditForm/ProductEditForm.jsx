@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-underscore-dangle */
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { dogFoodApi } from '../../api/DogFoodApi';
 import { getUserSelector } from '../../redux/slices/userSlice';
 import { newProductFormValidationSchema } from './validator';
@@ -36,9 +35,9 @@ function MyCheckbox({ children, ...props }) {
   );
 }
 
-export function ProductEditForm({ product }) {
-  const navigate = useNavigate();
+export function ProductEditForm({ closeHandler, product }) {
   const { token } = useSelector(getUserSelector);
+  const queryClient = useQueryClient();
 
   const initialValues = {
     name: product.name,
@@ -57,7 +56,10 @@ export function ProductEditForm({ product }) {
 
   const submitHandler = async (values) => {
     await mutateAsync(values);
-    navigate('/products');
+    closeHandler();
+    queryClient.invalidateQueries({
+      queryKey: ['ProductFetch'],
+    });
   };
 
   return (
