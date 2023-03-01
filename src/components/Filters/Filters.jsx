@@ -1,11 +1,11 @@
 import { useSearchParams } from 'react-router-dom';
 
 import {
-  DATE_FILTER, FILTER_QUERY_NAME, PRICE_FILTER, SALES_FILTER,
+  DATE_FILTER, FILTER_QUERY_NAME, PRICE_FILTER, SALES_FILTER, LIKES_FILTER,
 } from './constants';
 import { FilterItem } from './FilterItem';
 
-const FILTERS = [PRICE_FILTER, SALES_FILTER, DATE_FILTER];
+const FILTERS = [PRICE_FILTER, SALES_FILTER, DATE_FILTER, LIKES_FILTER];
 
 export function Filters() {
   const [searchParams, setSearchParams] = useSearchParams();
