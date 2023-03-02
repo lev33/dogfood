@@ -125,6 +125,7 @@ function ProductInner({ data }) {
           }) => (
             <ReviewItem
               key={rewiewId}
+              id={rewiewId}
               review={review}
             />
           ))}

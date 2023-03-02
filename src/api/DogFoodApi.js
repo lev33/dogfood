@@ -229,6 +229,29 @@ class DogFoodApi {
     return res.json();
   }
 
+  async deleteReviewById(productId, id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/review/${productId}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при удалении отзыва. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при удалении отзыва. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
   async getUserInfo(group, token) {
     this.checkToken(token);
 
