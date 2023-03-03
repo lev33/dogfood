@@ -9,9 +9,8 @@ import { withQuery } from '../HOCs/withQuery';
 import { ProductItem } from '../ProductItem/ProductItem';
 import { Search } from '../Search/Search';
 
-function ProductsInner({ data }) {
-  console.log({ data });
-  const products = data;
+function ProductsInner({ products }) {
+  console.log({ products });
 
   if (!products.length) return <h1>Ничего не найдено...</h1>;
 
@@ -52,7 +51,7 @@ export function Products({ query }) {
 
   let products = data;
 
-  if (currentFilterNameFromQuery) {
+  if (data && currentFilterNameFromQuery) {
     products = getFilteredProducts(data, currentFilterNameFromQuery);
   }
 
@@ -61,7 +60,7 @@ export function Products({ query }) {
       <Search />
       <Filters />
       <ProductsInnerWithQuery
-        data={products}
+        products={products}
         isLoading={isLoading}
         isFetching={isFetching}
         isError={isError}
