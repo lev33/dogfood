@@ -1,6 +1,7 @@
 import classNames from 'classnames';
-import { AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai';
-import { GiDogHouse } from 'react-icons/gi';
+import {
+  AiOutlineFileAdd, AiOutlineHeart, AiOutlineHome, AiOutlineInfoCircle, AiOutlineShoppingCart,
+} from 'react-icons/ai';
 import { RxExit } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
@@ -27,9 +28,7 @@ export function Header() {
         <ul className={headerStyles.headerMenu}>
           <li>
             <Link to="/">
-              <GiDogHouse size={24} />
-              {' '}
-              <b>DogFood</b>
+              <AiOutlineHome size={24} />
             </Link>
           </li>
           <li>
@@ -68,7 +67,7 @@ export function Header() {
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/user"
             >
-              Профиль
+              <AiOutlineInfoCircle size={24} />
             </NavLink>
             )}
           </li>
@@ -78,7 +77,7 @@ export function Header() {
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/add"
             >
-              Добавить
+              <AiOutlineFileAdd size={24} />
             </NavLink>
             )}
           </li>
