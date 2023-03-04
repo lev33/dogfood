@@ -48,7 +48,7 @@ export function ReviewForm({ id }) {
     await mutateAsync(values);
     setIsReviewFormOpen(false);
     queryClient.invalidateQueries({
-      queryKey: ['ProductFetch'],
+      queryKey: ['ReviewsFetch'],
     });
   };
 

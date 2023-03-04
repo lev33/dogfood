@@ -205,6 +205,28 @@ class DogFoodApi {
     return res.json();
   }
 
+  async getReviewsByProductId(id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/review/${id}`, {
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при получении отзывов товара. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при получении отзывов товара. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
   async addReview(values, id, token) {
     this.checkToken(token);
 

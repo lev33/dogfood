@@ -19,7 +19,7 @@ export function DeleteReviewModal({
   const deleteProductHandler = async () => {
     await mutateAsync();
     queryClient.invalidateQueries({
-      queryKey: ['ProductFetch'],
+      queryKey: ['ReviewsFetch'],
     });
   };
 

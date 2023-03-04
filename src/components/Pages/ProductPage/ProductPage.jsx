@@ -10,16 +10,16 @@ import { addProductToFavourites } from '../../../redux/slices/favouritesSlice';
 import { getUserSelector } from '../../../redux/slices/userSlice';
 import { withQuery } from '../../HOCs/withQuery';
 import { ReviewForm } from '../../ReviewForm/ReviewForm';
-import { ReviewItem } from '../../ReviewItem/ReviewItem';
 import { DeleteProductModal } from './DeleteProductModal';
 import { EditProductModal } from './EditProductModal';
+import { Reviews } from '../../Reviews/Reviews';
 
 function ProductInner({ data }) {
   console.log({ data });
   const user = useSelector(getUserSelector);
   const dispatch = useDispatch();
   const {
-    _id: id, name, pictures, description, price, wight, discount, stock, reviews, author,
+    _id: id, name, pictures, description, price, wight, discount, stock, author,
   } = data;
 
   const [isShowEditModal, setIsShowEditModal] = useState(false);
@@ -116,21 +116,7 @@ function ProductInner({ data }) {
         </div>
       </div>
       <ReviewForm id={id} />
-      <div>
-        <ul
-          className="d-flex flex-column p-2"
-        >
-          {reviews && reviews.map(({
-            _id: rewiewId, ...review
-          }) => (
-            <ReviewItem
-              key={rewiewId}
-              id={rewiewId}
-              review={review}
-            />
-          ))}
-        </ul>
-      </div>
+      <Reviews id={id} />
       <EditProductModal
         closeHandler={closeEditModalHandler}
         isOpen={isShowEditModal}

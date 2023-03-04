@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getUserSelector } from '../../redux/slices/userSlice';
@@ -21,7 +22,7 @@ export function ReviewItem({
     setIsShowDeleteModal(true);
   };
 
-  console.log({ user, review });
+  console.log({ user, id, review });
 
   return (
     <>
@@ -30,7 +31,7 @@ export function ReviewItem({
           <div>
             Автор
             {' '}
-            <b>{review.author}</b>
+            <b>{review.author.name}</b>
             ,
             {' '}
             {formattedUpdatedAt}
@@ -42,7 +43,7 @@ export function ReviewItem({
           </div>
         </div>
         <div>{review.text}</div>
-        {review.author === user.id && (
+        {review.author._id === user.id && (
         <button
           onClick={openDeleteModalHandler}
           type="button"
