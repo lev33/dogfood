@@ -67,7 +67,7 @@ export function AuthenticationPage() {
         <MyTextInput
           label="Пароль"
           name="password"
-          type="text"
+          type="password"
           placeholder="пароль"
         />
         <button disabled={isLoading} type="submit" className="btn btn-primary">Войти</button>

@@ -57,7 +57,7 @@ export function RegistrationPage() {
         <MyTextInput
           label="Пароль"
           name="password"
-          type="text"
+          type="password"
           placeholder="пароль"
         />
         <button
