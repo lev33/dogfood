@@ -1,14 +1,20 @@
 import classNames from 'classnames';
+import {
+  AiOutlineFileAdd, AiOutlineHeart, AiOutlineHome, AiOutlineInfoCircle, AiOutlineShoppingCart,
+} from 'react-icons/ai';
+import { RxExit } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { getCartSelector } from '../../redux/slices/cartSlice';
-import { clearLS } from '../../redux/slices/userSlice';
+import { getFavouritesSelector } from '../../redux/slices/favouritesSlice';
+import { clearLS, getUserSelector } from '../../redux/slices/userSlice';
 import headerStyles from './header.module.css';
 
 export function Header() {
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.user);
-  const count = useSelector(getCartSelector).length;
+  const { token } = useSelector(getUserSelector);
+  const cartCount = useSelector(getCartSelector).length;
+  const favouritesCount = useSelector(getFavouritesSelector).length;
 
   console.log('Header', { token });
 
@@ -21,7 +27,9 @@ export function Header() {
       <nav>
         <ul className={headerStyles.headerMenu}>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">
+              <AiOutlineHome size={24} />
+            </Link>
           </li>
           <li>
             <NavLink
@@ -35,9 +43,41 @@ export function Header() {
             { token && (
             <NavLink
               className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
+              to="/favourites"
+            >
+              <AiOutlineHeart size={24} />
+              {favouritesCount || null}
+            </NavLink>
+            )}
+          </li>
+          <li>
+            { token && (
+            <NavLink
+              className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
               to="/cart"
             >
-              {`Корзина ${count}`}
+              <AiOutlineShoppingCart size={24} />
+              {cartCount || null}
+            </NavLink>
+            )}
+          </li>
+          <li>
+            { token && (
+            <NavLink
+              className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
+              to="/user"
+            >
+              <AiOutlineInfoCircle size={24} />
+            </NavLink>
+            )}
+          </li>
+          <li>
+            { token && (
+            <NavLink
+              className={({ isActive }) => classNames({ [headerStyles.activeLink]: isActive })}
+              to="/add"
+            >
+              <AiOutlineFileAdd size={24} />
             </NavLink>
             )}
           </li>
@@ -68,7 +108,7 @@ export function Header() {
               type="submit"
               className="btn btn-warning"
             >
-              Выход
+              <RxExit />
             </button>
             )}
           </li>

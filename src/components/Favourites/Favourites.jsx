@@ -1,22 +1,20 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { dogFoodApi } from '../../api/DogFoodApi';
-import { getCartSelector } from '../../redux/slices/cartSlice';
+import { getFavouritesSelector } from '../../redux/slices/favouritesSlice';
 import { getUserSelector } from '../../redux/slices/userSlice';
-import { CartItem } from '../CartItem/CartItem';
-import { CartResult } from '../CartResult/CartResult';
+import { FavouritesItem } from '../FavouritesItem/FavouritesItem';
 import { withQuery } from '../HOCs/withQuery';
 
-function CartInner({ data }) {
-  console.log('CartData', { data });
+function FavouritesInner({ data }) {
+  console.log('FavouritesData', { data });
   const products = data;
   if (!products.length) {
     return (
       <>
-        <h1>Корзина пуста...</h1>
+        <h1>Список пуст...</h1>
         <Link to="/cart">
           <button type="button" className="btn btn-primary">
             Корзина
@@ -37,46 +35,36 @@ function CartInner({ data }) {
   }
 
   return (
-    <div className="d-flex flex-row justify-content-between">
-      <div>
-        <ul
-          className="d-flex flex-column p-2"
-        >
-          {products.map(({ _id: id, ...product }) => (
-            <CartItem
-              key={id}
-              id={id}
-              name={product.name}
-              pictures={product.pictures}
-              description={product.description}
-              price={product.price}
-              wight={product.wight}
-              discount={product.discount}
-              stock={product.stock}
-            />
-          ))}
-        </ul>
-      </div>
-      <div>
-        <CartResult data={data} />
-      </div>
-    </div>
+    <ul className="d-flex p-2 flex-wrap align-items-center justify-content-around">
+      {products.map(({ _id: id, ...product }) => (
+        <FavouritesItem
+          key={id}
+          id={id}
+          name={product.name}
+          pictures={product.pictures}
+          description={product.description}
+          price={product.price}
+          wight={product.wight}
+          discount={product.discount}
+          stock={product.stock}
+        />
+      ))}
+    </ul>
   );
 }
 
-const CartInnerWithQuery = withQuery(CartInner);
+const FavouritesInnerWithQuery = withQuery(FavouritesInner);
 
-export function Cart() {
-  const cart = useSelector(getCartSelector);
-  const ids = cart.map((el) => el.id);
-  console.log({ ids });
+export function Favourites() {
+  const favourites = useSelector(getFavouritesSelector);
+  console.log({ favourites });
   const { token } = useSelector(getUserSelector);
 
   const {
     data, isLoading, isError, error, refetch,
   } = useQuery({
-    queryKey: ['CartFetch', cart],
-    queryFn: () => dogFoodApi.getProductsByIds(ids, token),
+    queryKey: ['FavouritesFetch', favourites],
+    queryFn: () => dogFoodApi.getProductsByIds(favourites, token),
     keepPreviousData: true,
   });
 
@@ -85,17 +73,18 @@ export function Cart() {
     console.log({ idsFromServer });
   }
 
-  const filteredData = data && data.filter((el) => ids.includes(el._id));
+  // console.log({ data });
+  const filteredData = data && data.filter((el) => favourites.includes(el._id));
   console.log({ filteredData });
 
-  const isIdError = data && ids.length !== filteredData.length;
+  const isIdError = data && favourites.length !== filteredData.length;
   const idError = isIdError ? { message: 'idError' } : null;
   console.log({
     isError, error, isIdError, idError,
   });
 
   return (
-    <CartInnerWithQuery
+    <FavouritesInnerWithQuery
       data={filteredData}
       isLoading={isLoading}
       // isError={isError || isIdError}

@@ -1,23 +1,21 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getSearchSelector } from '../../../redux/slices/filterSlice';
 import { getUserSelector } from '../../../redux/slices/userSlice';
-import { Products } from '../../Products/Products';
+import { Favourites } from '../../Favourites/Favourites';
 
-export function ProductsPage() {
+export function FavouritesPage() {
   const navigate = useNavigate();
   const { token } = useSelector(getUserSelector);
-  const query = useSelector(getSearchSelector);
 
   useEffect(() => {
-    console.log('ProductsPage', { token });
+    console.log('FavouritesPage', { token });
     if (!token) navigate('/signin');
-  }, [token, query]);
+  }, [token]);
 
   return (token
   && (
-  <Products query={query} />
+  <Favourites />
   )
   );
 }

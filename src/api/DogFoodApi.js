@@ -43,6 +43,16 @@ class DogFoodApi {
       body: JSON.stringify(values),
     });
 
+    if (res.status === 400) {
+      throw new Error('Некорректно заполнено одно из полей');
+    }
+    if (res.status === 409) {
+      throw new Error('Пользователь с указанным email уже существует');
+    }
+    if (res.status >= 401) {
+      throw new Error(`Ошибка, код ${res.status}`);
+    }
+
     return res.json();
   }
 
@@ -100,6 +110,190 @@ class DogFoodApi {
       },
     })
       .then((res) => res.json())));
+  }
+
+  async addNewProduct(values, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products`, {
+      method: 'POST',
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при добавлении товара. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при добавлении товара. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
+  async deleteProductById(id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/${id}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при удалении товара. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при удалении товара. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
+  async editProductById(values, id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/${id}`, {
+      method: 'PATCH',
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при обновлении товара. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при обновлении товара. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
+  async getProductById(id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/${id}`, {
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при получении товара. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при получении товара. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
+  async getReviewsByProductId(id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/review/${id}`, {
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при получении отзывов товара. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при получении отзывов товара. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
+  async addReview(values, id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/review/${id}`, {
+      method: 'POST',
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при добавлении отзыва. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при добавлении отзыва.
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
+  async deleteReviewById(productId, id, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/products/review/${productId}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при удалении отзыва. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при удалении отзыва. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
+  }
+
+  async getUserInfo(group, token) {
+    this.checkToken(token);
+
+    const res = await fetch(`${this.baseUrl}/v2/${group}/users/me`, {
+      headers: {
+        authorization: this.getAuthorizationHeader(token),
+        'Content-type': 'application/json',
+      },
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      throw new Error(`Произошла ошибка при получении профиля пользователя. 
+        Проверьте отправляемые данные. Status: ${res.status}`);
+    }
+    if (res.status >= 500) {
+      throw new Error(`Произошла ошибка при получении профиля пользователя. 
+        Попробуйте сделать запрос позже. Status: ${res.status}`);
+    }
+
+    return res.json();
   }
 }
 

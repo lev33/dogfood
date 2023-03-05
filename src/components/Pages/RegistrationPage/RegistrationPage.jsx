@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { Formik, Form, useField } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import { withMutation } from '../../HOCs/withMutation';
 import { dogFoodApi } from '../../../api/DogFoodApi';
 import { registrationFormValidationSchema } from './validator';
 
@@ -23,12 +24,8 @@ function MyTextInput({ label, ...props }) {
   );
 }
 
-export function RegistrationPage() {
+export function RegistrationPageInner({ mutateAsync }) {
   const navigate = useNavigate();
-
-  const { mutateAsync, isLoading } = useMutation({
-    mutationFn: (data) => dogFoodApi.signUp(data),
-  });
 
   const submitHandler = async (values) => {
     const res = await mutateAsync(values);
@@ -57,11 +54,10 @@ export function RegistrationPage() {
         <MyTextInput
           label="Пароль"
           name="password"
-          type="text"
+          type="password"
           placeholder="пароль"
         />
         <button
-          disabled={isLoading}
           type="submit"
           className="btn btn-primary"
         >
@@ -69,5 +65,24 @@ export function RegistrationPage() {
         </button>
       </Form>
     </Formik>
+  );
+}
+
+const RegistrationPageWithQuery = withMutation(RegistrationPageInner);
+
+export function RegistrationPage() {
+  const {
+    mutateAsync, isError, error, isLoading,
+  } = useMutation({
+    mutationFn: (data) => dogFoodApi.signUp(data),
+  });
+
+  return (
+    <RegistrationPageWithQuery
+      mutateAsync={mutateAsync}
+      isError={isError}
+      error={error}
+      isLoading={isLoading}
+    />
   );
 }

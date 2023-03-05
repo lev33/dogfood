@@ -4,7 +4,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { dogFoodApi } from '../../../api/DogFoodApi';
-import { addUser } from '../../../redux/slices/userSlice';
+import { withMutation } from '../../HOCs/withMutation';
+import { addUser, getUserSelector } from '../../../redux/slices/userSlice';
 import { authenticationFormValidationSchema } from './validator';
 
 const initialValues = {
@@ -25,26 +26,26 @@ function MyTextInput({ label, ...props }) {
   );
 }
 
-export function AuthenticationPage() {
+export function AuthenticationPageInner({ mutateAsync }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.user);
+  const user = useSelector(getUserSelector);
 
   useEffect(() => {
-    console.log('Authentication', { token });
-    if (token) navigate('/products');
-  }, [token]);
-
-  const { mutateAsync, isLoading } = useMutation({
-    mutationFn: (data) => dogFoodApi.signIn(data),
-  });
+    console.log('Authentication', { user });
+    if (user.token) navigate('/products');
+  }, [user.token]);
 
   const submitHandler = async (values) => {
-    const res = await mutateAsync(values);
+    const {
+      data: {
+        group, name, email, _id: id,
+      }, token,
+    } = await mutateAsync(values);
     dispatch(addUser({
-      group: res.data.group, name: res.data.name, email: res.data.email, token: res.token,
+      group, name, email, token, id,
     }));
-    console.log({ values, res });
+    console.log({ values, token });
   };
 
   return (
@@ -63,11 +64,31 @@ export function AuthenticationPage() {
         <MyTextInput
           label="Пароль"
           name="password"
-          type="text"
+          type="password"
           placeholder="пароль"
         />
-        <button disabled={isLoading} type="submit" className="btn btn-primary">Войти</button>
+        <button type="submit" className="btn btn-primary">Войти</button>
       </Form>
     </Formik>
+  );
+}
+
+const AuthenticationPageWithQuery = withMutation(AuthenticationPageInner);
+
+export function AuthenticationPage() {
+  const {
+    mutateAsync, isError, error, isLoading,
+  } = useMutation({
+    mutationFn: (data) => dogFoodApi.signIn(data),
+  });
+
+  return (
+    <AuthenticationPageWithQuery
+      mutateAsync={mutateAsync}
+      isError={isError}
+      error={error}
+      isLoading={isLoading}
+    />
+
   );
 }

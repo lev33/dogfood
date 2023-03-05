@@ -1,11 +1,14 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import { useSelector } from 'react-redux';
 import { getCartSelector } from '../../redux/slices/cartSlice';
 
 export function CartResult({ data }) {
   const state = useSelector(getCartSelector);
   const sum = state.reduce((res, el) => {
-    const { price } = data.find(({ _id: id }) => id === el.id);
-    return res + price * el.count * el.isChecked;
+    const currentItem = data.find(({ _id: id }) => id === el.id);
+    const currentPrice = (currentItem?.price
+      ? currentItem?.price * (1 - currentItem?.discount / 100) : 0);
+    return res + currentPrice * el.count * el.isChecked;
   }, 0);
 
   return (
@@ -13,7 +16,7 @@ export function CartResult({ data }) {
       <div className="card-body">
         <h5 className="card-title">Итог</h5>
         <p className="card-text">
-          {sum}
+          {sum.toFixed(2)}
           {' '}
           руб.
         </p>

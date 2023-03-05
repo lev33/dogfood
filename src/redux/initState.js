@@ -6,8 +6,10 @@ export const initState = {
     name: '',
     email: '',
     token: '',
+    id: '',
   },
   cart: [],
+  favourites: [],
   filter: {
     search: '',
   },

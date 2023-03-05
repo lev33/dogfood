@@ -11,6 +11,10 @@ import { ProductsPage } from './components/Pages/ProductsPage/ProductsPage';
 import { AuthenticationPage } from './components/Pages/AuthenticationPage/AuthenticationPage';
 import { RegistrationPage } from './components/Pages/RegistrationPage/RegistrationPage';
 import { store } from './redux/store';
+import { UserPage } from './components/Pages/UserPage/UserPage';
+import { ProductPage } from './components/Pages/ProductPage/ProductPage';
+import { FavouritesPage } from './components/Pages/FavouritesPage/FavouritesPage';
+import { ProductAddPage } from './components/Pages/ProductAddPage/ProductAddPage';
 
 const myRouter = createBrowserRouter([
   {
@@ -26,8 +30,24 @@ const myRouter = createBrowserRouter([
         element: <ProductsPage />,
       },
       {
+        path: 'products/:id',
+        element: <ProductPage />,
+      },
+      {
+        path: 'favourites',
+        element: <FavouritesPage />,
+      },
+      {
         path: 'cart',
         element: <CartPage />,
+      },
+      {
+        path: 'user',
+        element: <UserPage />,
+      },
+      {
+        path: 'add',
+        element: <ProductAddPage />,
       },
       {
         path: 'signin',

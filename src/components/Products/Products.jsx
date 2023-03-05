@@ -1,13 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { dogFoodApi } from '../../api/DogFoodApi';
+import { getUserSelector } from '../../redux/slices/userSlice';
+import { FILTER_QUERY_NAME, getFilteredProducts } from '../Filters/constants';
+import { Filters } from '../Filters/Filters';
 import { withQuery } from '../HOCs/withQuery';
 import { ProductItem } from '../ProductItem/ProductItem';
 import { Search } from '../Search/Search';
 
-function ProductsInner({ query, data }) {
-  console.log({ data });
-  const products = query ? data : data.products;
+function ProductsInner({ products }) {
+  console.log({ products });
+
   if (!products.length) return <h1>Ничего не найдено...</h1>;
 
   return (
@@ -19,6 +23,10 @@ function ProductsInner({ query, data }) {
           name={product.name}
           pictures={product.pictures}
           description={product.description}
+          price={product.price}
+          wight={product.wight}
+          discount={product.discount}
+          stock={product.stock}
         />
       ))}
     </ul>
@@ -28,23 +36,33 @@ function ProductsInner({ query, data }) {
 const ProductsInnerWithQuery = withQuery(ProductsInner);
 
 export function Products({ query }) {
-  const { token } = useSelector((state) => state.user);
+  const { token } = useSelector(getUserSelector);
+
+  const [searchParams] = useSearchParams();
+  const currentFilterNameFromQuery = searchParams.get(FILTER_QUERY_NAME);
 
   const {
-    data, isLoading, isError, error, refetch,
+    data, isLoading, isFetching, isError, error, refetch,
   } = useQuery({
     queryKey: ['ProductsFetch', query],
-    queryFn: () => (query ? dogFoodApi.getQueryProducts(query, token)
-      : dogFoodApi.getAllProducts(token)),
+    queryFn: () => dogFoodApi.getQueryProducts(query, token),
+    keepPreviousData: true,
   });
+
+  let products = data;
+
+  if (data && currentFilterNameFromQuery) {
+    products = getFilteredProducts(data, currentFilterNameFromQuery);
+  }
 
   return (
     <>
       <Search />
+      <Filters />
       <ProductsInnerWithQuery
-        query={query}
-        data={data}
+        products={products}
         isLoading={isLoading}
+        isFetching={isFetching}
         isError={isError}
         error={error}
         refetch={refetch}
